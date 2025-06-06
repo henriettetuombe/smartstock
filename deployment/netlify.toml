@@ -1,0 +1,3 @@
+[build]
+  publish = "frontend/html"
+  command = "echo Deploying SmartStock frontend"

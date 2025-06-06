@@ -1,0 +1,20 @@
+# Django model structure summary
+
+User:
+  - id
+  - username
+  - email
+  - password
+
+Category:
+  - id
+  - name
+
+Item:
+  - id
+  - name
+  - quantity
+  - price
+  - status
+  - category (FK to Category)
+  - user (FK to User)
