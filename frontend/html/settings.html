@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title data-i18n="settingsTitle">Settings – SmartStock</title>
+  <link rel="stylesheet" href="../css/settings.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script src="../js/lang.js" defer></script>
+  <style>
+    .lang-select {
+      padding: 6px;
+      border-radius: 6px;
+      font-size: 14px;
+      margin-left: 10px;
+      border: 1px solid #ccc;
+    }
+    .lang-container {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 10px;
+    }
+    .lang-container::before {
+      content: "🌐";
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <i data-feather="box"></i>
+        <span data-i18n="appName">SmartStock</span>
+      </div>
+      <nav>
+        <a href="dashboard.html"><i data-feather="home"></i><span data-i18n="dashboard">Dashboard</span></a>
+        <a href="add_item.html"><i data-feather="plus-circle"></i><span data-i18n="addItem">Add Item</span></a>
+        <a href="update_item.html"><i data-feather="edit-3"></i><span data-i18n="updateItem">Update Item</span></a>
+        <a href="delete_item.html"><i data-feather="trash-2"></i><span data-i18n="deleteItem">Delete Item</span></a>
+        <a class="active" href="settings.html"><i data-feather="settings"></i><span data-i18n="settings">Settings</span></a>
+        <a href="login.html"><i data-feather="log-out"></i><span data-i18n="logout">Log Out</span></a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+      <header class="top-bar">
+        <div>
+          <h1 data-i18n="settings">Settings</h1>
+          <p class="subtitle" data-i18n="customize">Customize your SmartStock experience</p>
+        </div>
+        <div class="profile-box">
+          <input type="text" class="search-input" placeholder="Search settings..." data-i18n-placeholder="searchSettings" />
+          <div class="profile">
+            <div class="avatar">HU</div>
+            <div class="profile-details">
+              <div class="username">Henriette Umwiza</div>
+              <div class="role" data-i18n="manager">Manager</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="content">
+        <h2 class="section-title" data-i18n="appSettings">App Settings</h2>
+
+        <!-- Language Switcher -->
+        <div class="lang-container">
+          <label for="lang-select" data-i18n="language">Language:</label>
+          <select id="lang-select" class="lang-select">
+            <option value="en">English</option>
+            <option value="fr">Français</option>
+            <option value="kin">Kinyarwanda</option>
+          </select>
+        </div>
+
+        <!-- User Preferences -->
+        <div class="settings-card">
+          <h3><i data-feather="user"></i> <span data-i18n="userPreferences">User Preferences</span></h3>
+          <div class="settings-options">
+            <label><span data-i18n="darkMode">Enable Dark Mode</span><input type="checkbox" id="darkMode" /></label>
+            <label><span data-i18n="emailNotif">Email Notifications</span><input type="checkbox" id="emailNotifications" /></label>
+            <label><span data-i18n="autoSave">Auto-Save Inventory Updates</span><input type="checkbox" id="autoSave" /></label>
+          </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="settings-card">
+          <h3><i data-feather="bell"></i> <span data-i18n="notifications">Notifications</span></h3>
+          <div class="settings-options">
+            <label><span data-i18n="lowStockAlert">Stock Running Low Alerts</span><input type="checkbox" id="lowStockAlert" /></label>
+            <label><span data-i18n="weeklySummary">Weekly Inventory Summary Emails</span><input type="checkbox" id="weeklySummary" /></label>
+          </div>
+        </div>
+
+        <!-- System Configuration -->
+        <div class="settings-card">
+          <h3><i data-feather="sliders"></i> <span data-i18n="systemConfig">System Configuration</span></h3>
+          <div class="settings-options">
+            <label>
+              <span data-i18n="timezone">Timezone:</span>
+              <select id="timezone">
+                <option>Africa/Kigali</option>
+                <option>UTC</option>
+                <option>America/New_York</option>
+              </select>
+            </label>
+            <label>
+              <span data-i18n="defaultLanguage">Default Language:</span>
+              <select id="language">
+                <option>English</option>
+                <option>Kinyarwanda</option>
+                <option>Français</option>
+                <option>Swahili</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <!-- Account Settings -->
+        <div class="settings-card">
+          <h3><i data-feather="user-check"></i> <span data-i18n="accountSettings">Account Settings</span></h3>
+          <div class="settings-options">
+            <label><span data-i18n="fullName">Full Name:</span><input type="text" id="fullName" /></label>
+            <label><span data-i18n="email">Email Address:</span><input type="email" id="emailAddress" /></label>
+            <label><span data-i18n="role">Role:</span><input type="text" value="Manager" disabled /></label>
+            <label>
+              <span data-i18n="password">Password:</span>
+              <input type="password" value="********" />
+              <a href="#" class="change-password" data-i18n="changePassword">Change Password</a>
+            </label>
+          </div>
+        </div>
+
+        <!-- Save Button -->
+        <div class="sticky-footer">
+          <button class="save-btn"><i data-feather="save"></i> <span data-i18n="saveSettings">Save Settings</span></button>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="dashboard-footer">
+        <div class="footer-grid">
+          <div class="footer-column">
+            <h4 data-i18n="features">Features</h4>
+            <ul>
+              <li><a href="#" data-i18n="realTimeTracking">Real-Time Tracking</a></li>
+              <li><a href="#" data-i18n="alerts">Alerts & Summaries</a></li>
+              <li><a href="#" data-i18n="reports">Reports</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4 data-i18n="audience">Audience</h4>
+            <ul>
+              <li><a href="#">Shops & Kiosks</a></li>
+              <li><a href="#">Wholesalers</a></li>
+              <li><a href="#">Homes & Individuals</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4 data-i18n="support">Support</h4>
+            <ul>
+              <li><a href="#">FAQs</a></li>
+              <li><a href="#">Contact Support</a></li>
+              <li><a href="#">Terms & Privacy</a></li>
+            </ul>
+          </div>
+          <div class="footer-column cta">
+            <h4 data-i18n="smartstockApp">SmartStock App</h4>
+            <p data-i18n="manageOnPhone">Manage inventory on your phone.</p>
+            <a href="register.html" class="footer-btn" data-i18n="getStarted">Get Started</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© 2025 SmartStock. Built with ❤️ by Henriette for individuals and businesses.</p>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    feather.replace();
+
+    window.onload = function () {
+      document.getElementById("darkMode").checked = localStorage.getItem("darkMode") === "true";
+      document.getElementById("emailNotifications").checked = localStorage.getItem("emailNotifications") === "true";
+      document.getElementById("autoSave").checked = localStorage.getItem("autoSave") === "true";
+      document.getElementById("lowStockAlert").checked = localStorage.getItem("lowStockAlert") === "true";
+      document.getElementById("weeklySummary").checked = localStorage.getItem("weeklySummary") === "true";
+      document.getElementById("timezone").value = localStorage.getItem("timezone") || "Africa/Kigali";
+      document.getElementById("language").value = localStorage.getItem("language") || "English";
+      document.getElementById("fullName").value = localStorage.getItem("fullName") || "Henriette Umwiza";
+      document.getElementById("emailAddress").value = localStorage.getItem("emailAddress") || "henriette@example.com";
+
+      if (localStorage.getItem("darkMode") === "true") {
+        document.body.classList.add("dark-mode");
+      }
+
+      const savedLang = localStorage.getItem("selectedLanguage") || "en";
+      document.getElementById("lang-select").value = savedLang;
+      loadLanguage(savedLang);
+    };
+
+    document.getElementById("lang-select").addEventListener("change", function () {
+      const selectedLang = this.value;
+      loadLanguage(selectedLang);
+    });
+
+    document.querySelector(".save-btn").addEventListener("click", () => {
+      localStorage.setItem("darkMode", document.getElementById("darkMode").checked);
+      localStorage.setItem("emailNotifications", document.getElementById("emailNotifications").checked);
+      localStorage.setItem("autoSave", document.getElementById("autoSave").checked);
+      localStorage.setItem("lowStockAlert", document.getElementById("lowStockAlert").checked);
+      localStorage.setItem("weeklySummary", document.getElementById("weeklySummary").checked);
+      localStorage.setItem("timezone", document.getElementById("timezone").value);
+      localStorage.setItem("language", document.getElementById("language").value);
+      localStorage.setItem("fullName", document.getElementById("fullName").value);
+      localStorage.setItem("emailAddress", document.getElementById("emailAddress").value);
+
+      alert("✅ Settings saved!");
+      location.reload();
+    });
+  </script>
+</body>
+</html>

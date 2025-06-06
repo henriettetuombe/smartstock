@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Delete Item – SmartStock</title>
+  <link rel="stylesheet" href="../css/delete_item.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar">
+      <div class="logo">
+        <i data-feather="box"></i>
+        <span>SmartStock</span>
+      </div>
+      <nav>
+        <a href="dashboard.html"><i data-feather="home"></i><span>Dashboard</span></a>
+        <a href="add_item.html"><i data-feather="plus-circle"></i><span>Add Item</span></a>
+        <a href="update_item.html"><i data-feather="edit-3"></i><span>Update Item</span></a>
+        <a class="active" href="delete_item.html"><i data-feather="trash-2"></i><span>Delete Item</span></a>
+        <a href="settings.html"><i data-feather="settings"></i><span>Settings</span></a>
+        <a href="login.html"><i data-feather="log-out"></i><span>Log Out</span></a>
+      </nav>
+    </aside>
+
+    <main>
+      <header class="top-bar">
+        <div>
+          <h1>Welcome back, Henriette</h1>
+          <p class="subtitle">Let’s keep your inventory up to date</p>
+        </div>
+        <div class="profile-box">
+          <input type="text" id="searchInput" placeholder="Search here ..." />
+          <div class="profile">
+            <span><strong>Henriette Umwiza</strong><br><span class="role">Manager</span></span>
+            <div class="avatar">H</div>
+          </div>
+        </div>
+      </header>
+
+      <section class="content">
+        <h2 class="section-title">Delete Item</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="selectAll" /></th>
+              <th>Item</th>
+              <th>Date</th>
+              <th>Category</th>
+              <th>Quantity</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="itemTableBody">
+            <tr><td colspan="6">Loading items...</td></tr>
+          </tbody>
+        </table>
+
+        <div class="delete-confirm">
+          <p>Are you sure you want to delete <span id="selectedCount">selected item(s)</span>?</p>
+          <div class="buttons">
+            <button id="confirmDelete" class="btn-green">✔ Yes</button>
+            <button id="cancelDelete" class="btn-gray">✘ No</button>
+          </div>
+        </div>
+      </section>
+
+      <footer class="dashboard-footer">
+        <div class="footer-grid">
+          <div class="footer-column">
+            <h4>Features</h4>
+            <ul>
+              <li><a href="#">Real-Time Tracking</a></li>
+              <li><a href="#">Alerts & Summaries</a></li>
+              <li><a href="#">Reports</a></li>
+              <li><a href="#">Business Ready</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Audience</h4>
+            <ul>
+              <li><a href="#">Shops & Kiosks</a></li>
+              <li><a href="#">Wholesalers</a></li>
+              <li><a href="#">Homes & Individuals</a></li>
+              <li><a href="#">NGOs & Students</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">FAQs</a></li>
+              <li><a href="#">Contact Support</a></li>
+              <li><a href="#">Terms & Privacy</a></li>
+            </ul>
+          </div>
+          <div class="footer-column cta">
+            <h4>SmartStock App</h4>
+            <p>Manage inventory on your phone.</p>
+            <a href="register.html" class="footer-btn">Get Started</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© 2025 SmartStock. Built with ❤️ by Henriette for businesses and households.</p>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    feather.replace();
+    const token = localStorage.getItem('access_token');
+
+    async function loadItems() {
+      const tbody = document.getElementById('itemTableBody');
+      try {
+        const res = await fetch('http://localhost:8000/api/items/', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const items = await res.json();
+        tbody.innerHTML = '';
+        items.forEach(item => {
+          const tr = document.createElement('tr');
+          tr.dataset.id = item.id;
+          tr.innerHTML = `
+            <td><input type="checkbox" class="selectRow" /></td>
+            <td data-name="${item.name}">${item.name}</td>
+            <td>${new Date(item.date_added).toLocaleDateString()}</td>
+            <td>${item.category.name}</td>
+            <td>${item.quantity}</td>
+            <td class="${item.status.replace(/_/g, '-')}">${item.status.replace(/_/g, ' ')}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error('Failed to load items:', err);
+        tbody.innerHTML = '<tr><td colspan="6">Failed to load items.</td></tr>';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadItems();
+
+      document.getElementById('selectAll').addEventListener('change', function () {
+        document.querySelectorAll('.selectRow').forEach(checkbox => {
+          checkbox.checked = this.checked;
+        });
+      });
+
+      document.getElementById('confirmDelete').addEventListener('click', async () => {
+        const selected = Array.from(document.querySelectorAll('.selectRow:checked'));
+        for (let checkbox of selected) {
+          const row = checkbox.closest('tr');
+          const id = row.dataset.id;
+          await fetch(`http://localhost:8000/api/items/${id}/`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+        }
+        alert('Selected items deleted successfully.');
+        loadItems();
+      });
+
+      document.getElementById('cancelDelete').addEventListener('click', () => {
+        document.querySelectorAll('.selectRow').forEach(cb => cb.checked = false);
+        document.getElementById('selectAll').checked = false;
+        document.getElementById('selectedCount').textContent = 'selected item(s)';
+      });
+
+      document.getElementById('itemTableBody').addEventListener('change', () => {
+        const checked = document.querySelectorAll('.selectRow:checked');
+        const names = Array.from(checked).map(cb =>
+          cb.closest('tr').querySelector('td:nth-child(2)').textContent
+        );
+        document.getElementById('selectedCount').textContent = names.length ? names.join(', ') : 'selected item(s)';
+      });
+    });
+  </script>
+</body>
+</html>

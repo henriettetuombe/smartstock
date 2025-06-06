@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard – SmartStock</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #f4f6f9;
+      color: #333;
+    }
+    .dashboard {
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 250px;
+      background: #0f1e34;
+      color: #fff;
+      padding: 2rem 1rem;
+    }
+    .sidebar .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 2rem;
+    }
+    .sidebar nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      text-decoration: none;
+      margin-bottom: 0.5rem;
+      transition: background 0.2s;
+    }
+    .sidebar nav a:hover, .sidebar nav a.active {
+      background: #1e2e4a;
+    }
+    main {
+      flex: 1;
+      padding: 2rem 3rem;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    .profile-box {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .profile-box input {
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .avatar {
+      background: #007bff;
+      color: #fff;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    .content {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      padding: 2rem;
+      flex: 1;
+      min-width: 320px;
+    }
+    .card h2 {
+      font-size: 1.75rem;
+      color: #007bff;
+      margin-top: 0;
+    }
+    .badge {
+      background: #007bff;
+      color: #fff;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      border-radius: 4px;
+      margin-left: 8px;
+    }
+    .cta button {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      margin-right: 0.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cta button:hover {
+      background: #005bb5;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #eaeaea;
+    }
+    .dashboard-footer {
+      margin-top: 4rem;
+      font-size: 0.875rem;
+      text-align: center;
+      color: #888;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .footer-column h4 {
+      margin-bottom: 1rem;
+    }
+    .footer-column ul {
+      list-style: none;
+      padding: 0;
+    }
+    .footer-column li {
+      margin-bottom: 0.5rem;
+    }
+    .footer-btn {
+      display: inline-block;
+      background: #007bff;
+      color: #fff;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar">
+      <div class="logo"><i data-feather="box"></i><span>SmartStock</span></div>
+      <nav>
+        <a class="active" href="#"><i data-feather="home"></i>Dashboard</a>
+        <a href="add_item.html"><i data-feather="plus-circle"></i>Add Item</a>
+        <a href="update_item.html"><i data-feather="edit-3"></i>Update Item</a>
+        <a href="delete_item.html"><i data-feather="trash-2"></i>Delete Item</a>
+        <a href="settings.html"><i data-feather="settings"></i>Settings</a>
+        <a href="#" onclick="logout()"><i data-feather="log-out"></i>Log Out</a>
+      </nav>
+    </aside>
+
+    <main>
+      <header class="top-bar">
+        <div>
+          <h1>Welcome back, <span id="usernameDisplay">User</span></h1>
+          <p>Let’s keep your inventory up to date</p>
+        </div>
+        <div class="profile-box">
+          <input type="text" id="searchInput" placeholder="Search here ..." />
+          <div class="profile">
+            <span><strong id="profileName">User</strong><br><span class="role">Manager</span></span>
+            <div class="avatar">U</div>
+          </div>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="card">
+          <h4>Total Stock Value</h4>
+          <h2 id="totalStock">Loading...</h2>
+          <p id="lastUpdated">Loading...</p>
+          <p><strong>Inventory Insights</strong><span class="badge">Admin</span></p>
+          <p>Last Login: --</p>
+          <div class="cta">
+            <button onclick="window.location.href='add_item.html'"><i data-feather="plus"></i>Add Item</button>
+            <button><i data-feather="clock"></i>Inventory History</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h4>Inventory Activity</h4>
+          <table>
+            <thead>
+              <tr><th>Item</th><th>Date</th><th>Quantity</th><th>Status</th></tr>
+            </thead>
+            <tbody id="inventoryTableBody">
+              <tr><td colspan="4">Loading items...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer class="dashboard-footer">
+        <div class="footer-grid">
+          <div class="footer-column">
+            <h4>Features</h4>
+            <ul><li>Real-Time Tracking</li><li>Alerts & Summaries</li><li>Reports</li><li>Business Ready</li></ul>
+          </div>
+          <div class="footer-column">
+            <h4>Audience</h4>
+            <ul><li>Shops & Kiosks</li><li>Wholesalers</li><li>Homes & Individuals</li><li>NGOs & Students</li></ul>
+          </div>
+          <div class="footer-column">
+            <h4>Support</h4>
+            <ul><li>FAQs</li><li>Contact Support</li><li>Terms & Privacy</li></ul>
+          </div>
+          <div class="footer-column cta">
+            <h4>SmartStock App</h4>
+            <p>Manage inventory on your phone.</p>
+            <a href="register.html" class="footer-btn">Get Started</a>
+          </div>
+        </div>
+        <p>© 2025 SmartStock. Built with ❤️ by Henriette for businesses and households.</p>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    feather.replace();
+    function logout() {
+      localStorage.removeItem('access_token');
+      window.location.href = 'login.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const token = localStorage.getItem('access_token');
+      if (!token) return logout();
+
+      try {
+        // Fetch user
+        const userRes = await fetch('http://localhost:8000/api/user/', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const user = await userRes.json();
+        const username = user.first_name || user.username;
+        document.getElementById('usernameDisplay').textContent = username;
+        document.getElementById('profileName').textContent = username;
+        document.querySelector('.avatar').textContent = username.charAt(0).toUpperCase();
+
+        // Fetch items
+        const itemsRes = await fetch('http://localhost:8000/api/items/', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const items = await itemsRes.json();
+
+        let total = 0;
+        const tbody = document.getElementById('inventoryTableBody');
+        tbody.innerHTML = '';
+
+        items.forEach(item => {
+          total += item.quantity;
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${item.name}</td>
+            <td>${new Date(item.date_added).toLocaleDateString()}</td>
+            <td>${item.quantity}</td>
+            <td>${item.status.replace('_', ' ').toUpperCase()}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        document.getElementById('totalStock').textContent = `${items.length} item(s) tracked`;
+        document.getElementById('lastUpdated').textContent = `Last updated: ${new Date().toLocaleString()}`;
+      } catch (err) {
+        console.error('Dashboard error:', err);
+        logout();
+      }
+    });
+  </script>
+</body>
+</html>

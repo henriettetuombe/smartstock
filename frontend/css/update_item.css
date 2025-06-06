@@ -1,0 +1,379 @@
+/* ============================
+   Base Layout
+============================ */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: #f3f5f9;
+  color: #333;
+}
+
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: row;
+}
+
+/* ============================
+   Sidebar
+============================ */
+.sidebar {
+  background: #0f1e34;
+  width: 240px;
+  padding: 2rem 1rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.logo {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: #ff9f1c;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.7rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  color: white;
+  margin-bottom: 10px;
+  transition: background 0.3s ease;
+}
+
+nav a:hover,
+nav .active {
+  background: #ff9f1c;
+  color: white;
+  font-weight: 600;
+}
+
+/* ============================
+   Main Content
+============================ */
+main {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+/* ============================
+   Top Bar
+============================ */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.profile-box {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.profile-box input {
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+  width: 200px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  background: #ccc;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #333;
+}
+
+.role {
+  font-size: 0.8rem;
+  color: #888;
+  margin: 0;
+}
+
+/* ============================
+   Section Titles & Buttons
+============================ */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  color: #007bff;
+  margin: 0;
+}
+
+.save-btn {
+  padding: 0.6rem 1.4rem;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: background-color 0.3s ease;
+}
+
+.save-btn:hover {
+  background: #005fc4;
+}
+
+.sticky-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+/* ============================
+   Toolbar + Utility Buttons
+============================ */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.filter-group {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  background: #eef2f7;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.btn-sm:hover {
+  background-color: #dce7f7;
+}
+
+/* ============================
+   Table Styles
+============================ */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px dotted #bbb;
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+  font-size: 0.95rem;
+}
+
+th, td {
+  padding: 0.9rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+th:first-child,
+td:first-child {
+  text-align: center;
+}
+
+td[contenteditable="true"] {
+  background-color: #fffbea;
+  outline: none;
+  transition: background-color 0.3s ease;
+}
+
+td[contenteditable="true"]:hover {
+  background-color: #fff4d3;
+  cursor: text;
+}
+
+td select,
+td input[type="date"],
+td input[type="number"] {
+  padding: 0.4rem;
+  font-size: 0.95rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background: #fafafa;
+  width: 100%;
+}
+
+/* ============================
+   Footer Grid & Bottom Footer
+============================ */
+.dashboard-footer {
+  margin-top: 4rem;
+  padding: 2rem;
+  background: #f9f9f9;
+  border-top: 1px solid #eee;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.footer-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.footer-column h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: #0f1e34;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 0.6rem;
+}
+
+.footer-column ul li a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.footer-btn {
+  background-color: #ff9f1c;
+  color: white;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-weight: 600;
+}
+
+.footer-bottom {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+/* ============================
+   Responsive Design
+============================ */
+@media (max-width: 1024px) {
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    padding: 1rem;
+    white-space: nowrap;
+    gap: 1rem;
+  }
+
+  .sidebar nav {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .sidebar nav a {
+    background: #1a2d4d;
+    padding: 0.5rem 1rem;
+    flex: 0 0 auto;
+  }
+
+  .top-bar,
+  .toolbar,
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profile-box {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .profile-box input,
+  .filter-group button,
+  .btn-sm {
+    width: 100%;
+  }
+
+  table {
+    font-size: 0.9rem;
+    overflow-x: auto;
+  }
+
+  th, td {
+    padding: 0.7rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .section-title {
+    font-size: 1.2rem;
+  }
+
+  table {
+    font-size: 0.85rem;
+  }
+
+  th, td {
+    padding: 0.6rem;
+  }
+
+  .avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  main {
+    padding: 1rem;
+  }
+
+  .save-btn.sticky {
+    bottom: 10px;
+    right: 10px;
+  }
+}

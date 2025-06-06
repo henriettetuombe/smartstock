@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register - SmartStock</title>
+  <link rel="stylesheet" href="../css/register.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    .error {
+      color: #d32f2f;
+      font-size: 0.8rem;
+      margin-top: -0.4rem;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    .password-toggle {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    #password-strength {
+      font-size: 0.85rem;
+      margin-top: 0.4rem;
+      font-weight: 500;
+    }
+
+    .signup-btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .signup-btn .loader {
+      display: none;
+      border: 3px solid #fff;
+      border-top: 3px solid #0d1540;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      margin-left: 10px;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <div class="form-section">
+      <h1>Create your <span class="brand">SmartStock</span> Account</h1>
+      <p class="subtext">Start managing your stock in seconds</p>
+
+      <form id="registerForm" novalidate>
+        <div class="form-group">
+          <div>
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="first_name" required />
+            <small class="error" id="firstNameError"></small>
+          </div>
+          <div>
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="last_name" required />
+            <small class="error" id="lastNameError"></small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div>
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required />
+            <small class="error" id="emailError"></small>
+          </div>
+          <div>
+            <label for="phone_number">Phone Number</label>
+            <input type="tel" id="phone" name="phone_number" pattern="[0-9]{10,}" required />
+            <small class="error" id="phoneError"></small>
+          </div>
+        </div>
+
+        <div class="full-width">
+          <label for="accountType">Account Type</label>
+          <select id="accountType" name="account_type" required>
+            <option disabled selected>Select account type</option>
+            <option value="Individual">Individual</option>
+            <option value="Business">Business</option>
+          </select>
+          <small class="error" id="accountTypeError"></small>
+        </div>
+
+        <div class="full-width">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" minlength="8" required />
+          <small class="error" id="passwordError"></small>
+          <div id="password-strength"></div>
+        </div>
+
+        <div class="full-width">
+          <label for="confirmPassword">Confirm Password</label>
+          <input type="password" id="confirmPassword" name="confirm_password" required />
+          <small class="error" id="confirmPasswordError"></small>
+        </div>
+
+        <div class="password-toggle">
+          <input type="checkbox" id="togglePassword" />
+          <label for="togglePassword">Show Passwords</label>
+        </div>
+
+        <div class="terms">
+          <input type="checkbox" id="terms" required />
+          <label for="terms">
+            I agree to all <a href="#">terms</a>, <a href="#">privacy policies</a>, and <a href="#">fees</a>
+          </label>
+        </div>
+
+        <button type="submit" class="signup-btn" id="signupBtn">
+          <span class="btn-text">Sign up</span>
+          <span class="loader"></span>
+        </button>
+
+        <p class="login-text">Already have an account? <a href="login.html">Log in</a></p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('registerForm');
+    const togglePassword = document.getElementById('togglePassword');
+    const signupBtn = document.getElementById('signupBtn');
+    const btnText = signupBtn.querySelector('.btn-text');
+    const loader = signupBtn.querySelector('.loader');
+
+    togglePassword.addEventListener('change', () => {
+      const type = togglePassword.checked ? 'text' : 'password';
+      document.getElementById('password').type = type;
+      document.getElementById('confirmPassword').type = type;
+    });
+
+    document.getElementById('password').addEventListener('input', function () {
+      const strength = document.getElementById('password-strength');
+      const val = this.value;
+      if (val.length < 8) {
+        strength.textContent = 'Weak';
+        strength.style.color = '#d32f2f';
+      } else if (val.length < 12) {
+        strength.textContent = 'Moderate';
+        strength.style.color = '#fbc02d';
+      } else {
+        strength.textContent = 'Strong';
+        strength.style.color = '#388e3c';
+      }
+    });
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const accountType = document.getElementById('accountType').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const agreed = document.getElementById('terms').checked;
+
+      let hasError = false;
+      const clearErrors = () => {
+        ['firstName', 'lastName', 'email', 'phone', 'password', 'confirmPassword', 'accountType'].forEach(id => {
+          const el = document.getElementById(id + 'Error');
+          if (el) el.textContent = '';
+        });
+      };
+      clearErrors();
+
+      if (!firstName) {
+        document.getElementById('firstNameError').textContent = 'First name is required.';
+        hasError = true;
+      }
+      if (!lastName) {
+        document.getElementById('lastNameError').textContent = 'Last name is required.';
+        hasError = true;
+      }
+      if (!email) {
+        document.getElementById('emailError').textContent = 'Email is required.';
+        hasError = true;
+      }
+      if (!phone.match(/^\d{10,}$/)) {
+        document.getElementById('phoneError').textContent = 'Phone must be at least 10 digits.';
+        hasError = true;
+      }
+      if (!accountType || accountType === 'Select account type') {
+        document.getElementById('accountTypeError').textContent = 'Please select an account type.';
+        hasError = true;
+      }
+      if (password.length < 8) {
+        document.getElementById('passwordError').textContent = 'Password must be at least 8 characters.';
+        hasError = true;
+      }
+      if (password !== confirmPassword) {
+        document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.';
+        hasError = true;
+      }
+      if (!agreed) {
+        alert('You must agree to the terms.');
+        hasError = true;
+      }
+      if (hasError) return;
+
+      // Loader on
+      btnText.style.display = 'none';
+      loader.style.display = 'inline-block';
+
+      try {
+        const res = await fetch('http://localhost:8000/api/register/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: email, // ✅ REQUIRED
+            first_name: firstName,
+            last_name: lastName,
+            email,
+            phone_number: phone,
+            account_type: accountType,
+            password,
+            confirm_password: confirmPassword
+          })
+        });
+
+        if (res.ok) {
+          alert('Registration successful! Redirecting to login...');
+          window.location.href = 'login.html';
+        } else {
+          const data = await res.json();
+          if (data.error) {
+            alert(data.error);
+          } else {
+            const errorMessages = Object.entries(data)
+              .map(([field, messages]) => `${field}: ${messages.join(', ')}`)
+              .join('\n');
+            alert('Registration failed:\n' + errorMessages);
+          }
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Something went wrong. Please try again later.');
+      } finally {
+        loader.style.display = 'none';
+        btnText.style.display = 'inline-block';
+      }
+    });
+  </script>
+</body>
+</html>

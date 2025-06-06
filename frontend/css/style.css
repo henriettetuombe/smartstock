@@ -1,0 +1,110 @@
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: #f4f6f8;
+  color: #222;
+}
+.container {
+  display: flex;
+  height: 100vh;
+}
+.sidebar {
+  background: #0c4a6e;
+  color: white;
+  width: 240px;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar .brand {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+.sidebar nav a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 0;
+  display: block;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.sidebar nav a:hover {
+  background: rgba(255,255,255,0.1);
+  border-radius: 5px;
+  padding-left: 10px;
+}
+.main {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.main-header .subtitle {
+  margin-top: 0.2rem;
+  color: #555;
+}
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.avatar {
+  width: 40px;
+  height: 40px;
+  background: #ccc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.top-actions {
+  margin: 1.5rem 0;
+  display: flex;
+  gap: 10px;
+}
+input[type="text"], input[type="number"] {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.btn {
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.primary-btn {
+  background-color: #0c4a6e;
+  color: white;
+}
+.danger-btn {
+  background-color: #c0392b;
+  color: white;
+}
+.inventory-table {
+  width: 100%;
+  background: white;
+  border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.inventory-table th, .inventory-table td {
+  padding: 0.9rem;
+  border: 1px solid #ddd;
+}
+.inventory-table th {
+  background: #eaeff3;
+  text-align: left;
+}
+.status-instock { color: green; font-weight: bold; }
+.status-low { color: orange; font-weight: bold; }
+.status-out { color: red; font-weight: bold; }
+.hidden {
+  display: none;
+}

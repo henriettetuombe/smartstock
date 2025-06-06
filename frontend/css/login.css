@@ -1,0 +1,218 @@
+/* === Base Reset === */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: #f5f7fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* === Container === */
+.login-container {
+  display: flex;
+  width: 100%;
+  max-width: 960px;
+  min-height: 600px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+/* === Form Panel === */
+.form-section {
+  width: 50%;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-section h1 {
+  font-size: 2rem;
+  color: #111;
+  margin-bottom: 0.5rem;
+}
+
+.form-section .brand {
+  color: #0d1540;
+  font-weight: 600;
+}
+
+.subtext {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+/* === Google Sign-In Button === */
+.google-signin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0.7rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 32px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  transition: background 0.3s ease;
+}
+
+.google-signin:hover {
+  background: #f1f1f1;
+}
+
+.google-signin img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+/* === Form === */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 0.9rem;
+  color: #444;
+  margin-bottom: 0.4rem;
+}
+
+/* === Input Fields === */
+input[type="email"],
+input[type="password"] {
+  padding: 0.75rem;
+  font-size: 1rem;
+  background: #f1f3f5;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  outline: none;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus {
+  border-color: #3f51b5;
+  box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.1);
+}
+
+/* === Footer === */
+.form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+  font-size: 0.9rem;
+}
+
+.form-footer label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.form-footer a {
+  color: #0d1540;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.form-footer a:hover {
+  text-decoration: underline;
+}
+
+/* === Login Button === */
+.login-btn {
+  background-color: #0d1540;
+  color: white;
+  padding: 0.9rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #1f2b6c;
+}
+
+/* === Sign Up Text === */
+.signup-text {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.signup-text a {
+  color: #3f51b5;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.signup-text a:hover {
+  text-decoration: underline;
+}
+
+/* === Image Panel === */
+.image-section {
+  width: 50%;
+  background-color: #eee;
+}
+
+.image-section img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* === Responsive === */
+@media (max-width: 960px) {
+  .login-container {
+    flex-direction: column;
+    max-width: 500px;
+  }
+
+  .form-section,
+  .image-section {
+    width: 100%;
+  }
+
+  .image-section {
+    height: 240px;
+  }
+
+  .form-section {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .form-section {
+    padding: 1.2rem;
+  }
+
+  .google-signin {
+    font-size: 0.9rem;
+  }
+
+  input[type="email"],
+  input[type="password"] {
+    font-size: 0.9rem;
+  }
+
+  .form-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+}
