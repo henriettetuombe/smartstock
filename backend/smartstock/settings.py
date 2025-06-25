@@ -25,7 +25,7 @@ INSTALLED_APPS = [
     'corsheaders',
 
     # Local apps
-    'inventory',
+    'inventory.apps.InventoryConfig',  # ✅ ensures signals are loaded
 ]
 
 # === Middleware ===

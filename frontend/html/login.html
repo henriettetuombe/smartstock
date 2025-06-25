@@ -155,30 +155,33 @@
   <div class="login-container">
     <div class="form-section">
       <h1><span data-i18n="welcome">Welcome to</span> <span class="brand" data-i18n="appName">SmartStock</span></h1>
-      <p class="subtext" data-i18n="subtext">Manage your inventory easily<br>across all your devices</p>
+      <p class="subtext" data-i18n="subtext">Manage your inventory easily across all your devices</p>
 
-      <button class="google-signin" onclick="alert('Google Sign-In not yet implemented')">
-        <img src="https://www.google.com/favicon.ico" alt="Google Icon" width="20" height="20" />
+      <button class="google-signin" onclick="signInWithGoogle()">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Icon" width="20" height="20" />
         <span data-i18n="googleSignIn">Sign in with Google</span>
       </button>
 
       <form id="loginForm">
-        <label for="username" data-i18n="username">Username*</label>
-        <input type="text" id="username" placeholder="Enter your username" required />
+        <label for="username" data-i18n="username">Username or Email*</label>
+        <input type="text" id="username" data-i18n-placeholder="placeholder.username" placeholder="Enter your username or email" required />
 
         <label for="password" data-i18n="password">Password*</label>
-        <input type="password" id="password" placeholder="Minimum 8 characters" minlength="8" required />
+        <input type="password" id="password" data-i18n-placeholder="placeholder.password" placeholder="Minimum 8 characters" minlength="8" required />
 
         <div class="form-footer">
-          <label class="remember-me"><input type="checkbox" /> <span data-i18n="rememberMe">Remember me</span></label>
+          <label class="remember-me">
+            <input type="checkbox" /> <span data-i18n="rememberMe">Remember me</span>
+          </label>
           <a href="#" data-i18n="forgotPassword">Forgot password?</a>
         </div>
 
         <button type="submit" class="login-btn" data-i18n="login">Login</button>
       </form>
 
-      <p class="signup-text" data-i18n="signupText">
-        New to SmartStock? <a href="register.html" data-i18n="signupHere">Sign up here</a>
+      <p class="signup-text">
+        <span data-i18n="signupText">New to SmartStock?</span>
+        <a id="signup-link" data-i18n="signupHere" href="register.html">Sign up here</a>
       </p>
     </div>
 
@@ -188,6 +191,29 @@
   </div>
 
   <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const lang = new URLSearchParams(window.location.search).get('lang') || localStorage.getItem("selectedLang") || "en";
+      localStorage.setItem("selectedLang", lang);
+      loadTranslations(lang);
+      document.getElementById("signup-link").href = `register.html?lang=${lang}`;
+    });
+
+    function loadTranslations(lang) {
+      fetch(`../lang/${lang}.json`)
+        .then(res => res.json())
+        .then(translations => {
+          document.querySelectorAll("[data-i18n]").forEach(el => {
+            const key = el.getAttribute("data-i18n");
+            if (translations[key]) el.innerHTML = translations[key];
+          });
+
+          document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+            const key = el.getAttribute("data-i18n-placeholder");
+            if (translations[key]) el.placeholder = translations[key];
+          });
+        });
+    }
+
     document.getElementById('loginForm').addEventListener('submit', async function (e) {
       e.preventDefault();
       const username = document.getElementById('username').value.trim();
@@ -200,22 +226,38 @@
           body: JSON.stringify({ username, password })
         });
 
-        const data = await res.json();
+        let data;
+        try {
+          data = await res.json();
+        } catch (jsonErr) {
+          console.error("Invalid JSON response:", await res.text());
+          return alert("Unexpected server response. Check console.");
+        }
 
         if (res.ok && data.access && data.refresh) {
           localStorage.setItem('access_token', data.access);
           localStorage.setItem('refresh_token', data.refresh);
           alert('Login successful!');
-          window.location.href = 'dashboard.html';
+          window.location.href = `dashboard.html?lang=${localStorage.getItem('selectedLang') || 'en'}`;
         } else {
-          alert(data.detail || 'Login failed. Please check your credentials.');
+          console.error("Backend error response:", data);
+          alert(data.error || data.detail || 'Login failed. Please check your credentials.');
         }
-
       } catch (err) {
-        console.error('Login error:', err);
+        console.error('Login request failed:', err);
         alert('Something went wrong. Try again later.');
       }
     });
+
+    function signInWithGoogle() {
+      const clientId = "170655378518-8ad1hbkokallahindl7ao5c5960b0f9e6.apps.googleusercontent.com";
+      const redirectUri = "http://127.0.0.1:5500/frontend/html/login.html";
+      const scope = "openid profile email";
+      const responseType = "token";
+
+      const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
+      window.location.href = oauthUrl;
+    }
   </script>
 </body>
 </html>

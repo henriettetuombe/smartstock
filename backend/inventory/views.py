@@ -5,22 +5,21 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
+from django.db.models import Q
 
 from .models import Category, Item
 from .serializers import (
     CategorySerializer,
     ItemSerializer,
     UserSerializer,
-    UserRegistrationSerializer  # ✅ Import this
+    UserRegistrationSerializer
 )
-
 
 # === Category API ===
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all().order_by('name')
     serializer_class = CategorySerializer
     permission_classes = [IsAuthenticated]
-
 
 # === Item API ===
 class ItemViewSet(viewsets.ModelViewSet):
@@ -36,7 +35,6 @@ class ItemViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save(owner=self.request.user)
 
-
 # === Get Logged-In User Info ===
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -44,44 +42,55 @@ def current_user_view(request):
     serializer = UserSerializer(request.user)
     return Response(serializer.data)
 
-
-# === JWT Authentication Login ===
+# === JWT Authentication Login (by email or username) ===
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def get_auth_token(request):
     """
-    Accepts: { "username": "email", "password": "yourpassword" }
+    Accepts: { "username": "email or username", "password": "yourpassword" }
     Returns: { "refresh": "...", "access": "..." }
     """
-    username = request.data.get('username')
+    identifier = request.data.get('username')
     password = request.data.get('password')
 
-    user = authenticate(username=username, password=password)
+    if not identifier or not password:
+        return Response({"error": "Username/email and password are required."},
+                        status=status.HTTP_400_BAD_REQUEST)
+
+    users = User.objects.filter(Q(username=identifier) | Q(email=identifier))
+
+    if users.count() != 1:
+        return Response({"error": "Invalid or duplicate credentials."},
+                        status=status.HTTP_401_UNAUTHORIZED)
+
+    user_obj = users.first()
+    user = authenticate(username=user_obj.username, password=password)
+
     if user:
         refresh = RefreshToken.for_user(user)
         return Response({
             'refresh': str(refresh),
             'access': str(refresh.access_token)
         })
-    return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
+    return Response({"error": "Invalid credentials."}, status=status.HTTP_401_UNAUTHORIZED)
 
-# === User Registration with Serializer and Profile ===
+# === User Registration ===
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register_user(request):
     """
-    Accepts: first_name, last_name, email, phone_number, password,
-             confirm_password, account_type
-    Returns: access & refresh tokens
+    Accepts: first_name, last_name, email, phone_number,
+             account_type, password, confirm_password
+    Returns: access & refresh tokens or validation errors
     """
     serializer = UserRegistrationSerializer(data=request.data)
-    
+
     if serializer.is_valid():
         user = serializer.save()
         refresh = RefreshToken.for_user(user)
         return Response({
-            "message": "User registered successfully",
+            "message": "User registered successfully.",
             "refresh": str(refresh),
             "access": str(refresh.access_token)
         }, status=status.HTTP_201_CREATED)

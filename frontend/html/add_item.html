@@ -3,26 +3,169 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title data-i18n="title">Add Item – SmartStock</title>
-  <link rel="stylesheet" href="../css/add_item.css" />
+  <title>Add Item – SmartStock</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f4f6f9;
+      color: #333;
+    }
+    .dashboard {
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 250px;
+      background: #0f1e34;
+      color: #fff;
+      padding: 2rem 1rem;
+    }
+    .sidebar .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sidebar nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      text-decoration: none;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      transition: background 0.2s;
+    }
+    .sidebar nav a:hover, .sidebar nav a.active {
+      background: #1e2e4a;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid #ddd;
+    }
+    .profile-box {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .search-input {
+      padding: 0.5rem 1rem;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      outline: none;
+    }
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #007bff;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    .content {
+      padding: 2rem 3rem;
+    }
+    .section-title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .add-item-form {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .form-grid input, .form-grid select {
+      padding: 0.75rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 100%;
+    }
+    .save-btn {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+    th, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    th {
+      background: #f9fafc;
+    }
+    .dashboard-footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.875rem;
+      color: #777;
+    }
+    @media (max-width: 768px) {
+      .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="dashboard">
     <!-- Sidebar -->
     <aside class="sidebar">
-      <div class="logo">
-        <i data-feather="box"></i>
-        <span>SmartStock</span>
-      </div>
+      <div class="logo"><i data-feather="box"></i><span>SmartStock</span></div>
       <nav>
-        <a href="dashboard.html"><i data-feather="home"></i><span data-i18n="dashboard">Dashboard</span></a>
-        <a class="active" href="add_item.html"><i data-feather="plus-circle"></i><span data-i18n="add_item">Add Item</span></a>
-        <a href="update_item.html"><i data-feather="edit-3"></i><span data-i18n="update_item">Update Item</span></a>
-        <a href="delete_item.html"><i data-feather="trash-2"></i><span data-i18n="delete_item">Delete Item</span></a>
-        <a href="settings.html"><i data-feather="settings"></i><span data-i18n="settings">Settings</span></a>
-        <a href="login.html"><i data-feather="log-out"></i><span data-i18n="logout">Log Out</span></a>
+        <a href="dashboard.html"><i data-feather="home"></i>Dashboard</a>
+        <a class="active" href="#"><i data-feather="plus-circle"></i>Add Item</a>
+        <a href="update_item.html"><i data-feather="edit-3"></i>Update Item</a>
+        <a href="delete_item.html"><i data-feather="trash-2"></i>Delete Item</a>
+        <a href="settings.html"><i data-feather="settings"></i>Settings</a>
+        <a href="#" onclick="logout()"><i data-feather="log-out"></i>Log Out</a>
       </nav>
     </aside>
 
@@ -30,24 +173,20 @@
     <main>
       <header class="top-bar">
         <div>
-          <h1 data-i18n="welcome_back">Welcome back, Henriette</h1>
-          <p class="subtitle" data-i18n="subtitle">Let’s keep your inventory up to date</p>
+          <h1 id="welcomeText">Welcome back</h1>
+          <p class="subtitle">Let’s keep your inventory up to date</p>
         </div>
         <div class="profile-box">
           <input type="text" id="searchInput" class="search-input" placeholder="Search items..." />
           <div class="profile">
-            <span>
-              <strong>Henriette Umwiza</strong><br>
-              <span class="role">Manager</span>
-            </span>
-            <div class="avatar">H</div>
+            <span><strong id="profileName">User</strong></span>
+            <div class="avatar" id="profileInitial">U</div>
           </div>
         </div>
       </header>
 
       <section class="content">
-        <h2 class="section-title" data-i18n="add_new_items">Add New Items to Stock</h2>
-
+        <h2 class="section-title">Add New Items to Stock</h2>
         <form class="add-item-form" id="addItemForm">
           <div class="form-grid">
             <input type="text" id="itemName" placeholder="Item Name" required />
@@ -82,160 +221,129 @@
       </section>
 
       <footer class="dashboard-footer">
-        <div class="footer-grid">
-          <div class="footer-column">
-            <h4 data-i18n="features">Features</h4>
-            <ul>
-              <li><a href="#" data-i18n="real_time_tracking">Real-Time Tracking</a></li>
-              <li><a href="#" data-i18n="alerts_summaries">Alerts & Summaries</a></li>
-              <li><a href="#" data-i18n="reports">Reports</a></li>
-              <li><a href="#" data-i18n="business_ready">Business Ready</a></li>
-            </ul>
-          </div>
-          <div class="footer-column">
-            <h4 data-i18n="audience">Audience</h4>
-            <ul>
-              <li><a href="#" data-i18n="shops_kiosks">Shops & Kiosks</a></li>
-              <li><a href="#" data-i18n="wholesalers">Wholesalers</a></li>
-              <li><a href="#" data-i18n="homes_individuals">Homes & Individuals</a></li>
-              <li><a href="#" data-i18n="ngos_students">NGOs & Students</a></li>
-            </ul>
-          </div>
-          <div class="footer-column">
-            <h4 data-i18n="support">Support</h4>
-            <ul>
-              <li><a href="#" data-i18n="faqs">FAQs</a></li>
-              <li><a href="#" data-i18n="contact_support">Contact Support</a></li>
-              <li><a href="#" data-i18n="terms_privacy">Terms & Privacy</a></li>
-            </ul>
-          </div>
-          <div class="footer-column cta">
-            <h4 data-i18n="app_cta">SmartStock App</h4>
-            <p data-i18n="app_manage">Manage inventory on your phone.</p>
-            <a href="register.html" class="footer-btn" data-i18n="get_started">Get Started</a>
-          </div>
-        </div>
-        <div class="footer-bottom">
-          <p data-i18n="footer_copy">© 2025 SmartStock. Built with ❤️ by Henriette for individuals and businesses.</p>
-        </div>
+        © 2025 SmartStock. Built by Henriette for individuals and businesses.
       </footer>
     </main>
   </div>
 
   <script>
-  feather.replace();
-  const token = localStorage.getItem('access_token');
+    feather.replace();
+    const token = localStorage.getItem('access_token');
+    if (!token) logout();
 
-  async function loadCategories() {
-    const select = document.getElementById('itemCategory');
-    try {
-      const res = await fetch('http://localhost:8000/api/categories/', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      let categories = await res.json();
+    function logout() {
+      localStorage.removeItem('access_token');
+      window.location.href = 'login.html';
+    }
 
-      const extra = [
-        'Food', 'Beverages', 'Dairy', 'Bakery', 'Fruits', 'Vegetables',
-        'Snacks', 'Frozen Foods', 'Electronics', 'Clothing', 'Shoes',
-        'Accessories', 'Pharmacy', 'Hygiene', 'Personal Care',
-        'Kitchenware', 'Cleaning Supplies', 'Office Supplies',
-        'Stationery', 'Toys', 'Household Items', 'Gas Cylinders'
-      ];
+    async function fetchUserInfo() {
+      try {
+        const res = await fetch('http://localhost:8000/api/user/', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const user = await res.json();
+        const name = user.first_name?.trim() || user.username || 'User';
+        const initial = name.charAt(0).toUpperCase();
 
-      extra.forEach(name => {
-        const exists = categories.find(c => c.name.toLowerCase() === name.toLowerCase());
-        if (!exists) categories.push({ id: '', name });
-      });
+        document.getElementById('profileInitial').textContent = initial;
+        document.getElementById('profileName').textContent = name;
+        document.getElementById('welcomeText').textContent = `Welcome back, ${name}`;
+      } catch (err) {
+        console.error('User info error:', err);
+        logout();
+      }
+    }
 
-      categories.forEach(cat => {
-        if (cat.id) {
+    async function loadCategories() {
+      const select = document.getElementById('itemCategory');
+      try {
+        const res = await fetch('http://localhost:8000/api/categories/', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const categories = await res.json();
+        categories.forEach(cat => {
           const opt = document.createElement('option');
           opt.value = cat.id;
           opt.textContent = cat.name;
           select.appendChild(opt);
-        }
-      });
-    } catch (err) {
-      console.error('Failed to load categories:', err);
-    }
-  }
-
-  async function loadItems() {
-    const tbody = document.getElementById('itemTableBody');
-    try {
-      const res = await fetch('http://localhost:8000/api/items/', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const items = await res.json();
-      tbody.innerHTML = '';
-      if (!items.length) {
-        tbody.innerHTML = '<tr><td colspan="5">No items found.</td></tr>';
-        return;
+        });
+      } catch (err) {
+        console.error('Load categories failed:', err);
       }
-      items.forEach(item => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${item.name}</td>
-          <td>${new Date(item.date_added).toLocaleDateString()}</td>
-          <td>${item.category.name || item.category}</td>
-          <td>${item.quantity}</td>
-          <td>${item.status.replace('_', ' ')}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    } catch (err) {
-      console.error('Failed to load items:', err);
     }
-  }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    loadCategories();
-    loadItems();
-
-    document.getElementById('addItemForm').addEventListener('submit', async function (e) {
-      e.preventDefault();
-      const name = document.getElementById('itemName').value;
-      const date = document.getElementById('itemDate').value;
-      const categoryId = parseInt(document.getElementById('itemCategory').value);
-      const quantity = document.getElementById('itemQuantity').value;
-      const status = document.getElementById('itemStatus').value;
-
-      if (isNaN(categoryId)) {
-        alert('Please select a valid category.');
-        return;
-      }
-
+    async function loadItems() {
+      const tbody = document.getElementById('itemTableBody');
       try {
         const res = await fetch('http://localhost:8000/api/items/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            name,
-            date_added: date,
-            category_id: categoryId,  // ✅ correct field name
-            quantity,
-            status
-          })
+          headers: { 'Authorization': `Bearer ${token}` }
         });
-
-        if (res.ok) {
-          alert('Item added successfully!');
-          this.reset();
-          loadItems();
-        } else {
-          const error = await res.json();
-          alert(error.detail || 'Error adding item');
-        }
+        const items = await res.json();
+        tbody.innerHTML = '';
+        items.forEach(item => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${item.name}</td>
+            <td>${new Date(item.date_added).toLocaleDateString()}</td>
+            <td>${item.category?.name || item.category}</td>
+            <td>${item.quantity}</td>
+            <td>${item.status.replace('_', ' ')}</td>
+          `;
+          tbody.appendChild(tr);
+        });
       } catch (err) {
-        console.error('Add item failed:', err);
-        alert('Something went wrong');
+        console.error('Load items failed:', err);
       }
-    });
-  });
-</script>
+    }
 
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchUserInfo();
+      loadCategories();
+      loadItems();
+
+      document.getElementById('addItemForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const name = document.getElementById('itemName').value;
+        const date = document.getElementById('itemDate').value;
+        const categoryId = parseInt(document.getElementById('itemCategory').value);
+        const quantity = document.getElementById('itemQuantity').value;
+        const status = document.getElementById('itemStatus').value;
+
+        if (isNaN(categoryId)) {
+          alert('Please select a valid category.');
+          return;
+        }
+
+        try {
+          const res = await fetch('http://localhost:8000/api/items/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+              name,
+              date_added: date,
+              category_id: categoryId,
+              quantity,
+              status
+            })
+          });
+
+          if (res.ok) {
+            alert('Item added successfully!');
+            this.reset();
+            loadItems();
+          } else {
+            const error = await res.json();
+            alert(error.detail || 'Error adding item');
+          }
+        } catch (err) {
+          console.error('Add item failed:', err);
+          alert('Something went wrong');
+        }
+      });
+    });
+  </script>
 </body>
 </html>

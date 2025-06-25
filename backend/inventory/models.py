@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+# === Category Model ===
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
@@ -20,7 +21,10 @@ class Category(models.Model):
         for name in default_categories:
             cls.objects.get_or_create(name=name)
 
+    class Meta:
+        ordering = ['name']
 
+# === Item Model ===
 class Item(models.Model):
     STATUS_CHOICES = (
         ('in_stock', 'In Stock'),
@@ -32,11 +36,13 @@ class Item(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='items')
     quantity = models.PositiveIntegerField()
     date_added = models.DateField(default=timezone.now)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='in_stock')
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='items')
 
     def __str__(self):
-        return f"{self.name} ({self.quantity})"
+        return f"{self.name} - {self.quantity} ({self.get_status_display()})"
 
     def save(self, *args, **kwargs):
         self.update_status()
@@ -50,12 +56,25 @@ class Item(models.Model):
         else:
             self.status = 'in_stock'
 
+    class Meta:
+        ordering = ['-date_added']
 
+# === User Profile Model ===
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    ACCOUNT_TYPE_CHOICES = (
+        ('personal', 'Personal'),
+        ('business', 'Business'),
+        ('admin', 'Admin'),
+        ('staff', 'Staff'),
+    )
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     phone_number = models.CharField(max_length=20)
-    account_type = models.CharField(max_length=20)
+    account_type = models.CharField(max_length=20, choices=ACCOUNT_TYPE_CHOICES)
     role = models.CharField(max_length=50, default='Manager')
 
     def __str__(self):
-        return f"{self.user.email} Profile"
+        return f"{self.user.get_full_name()} ({self.account_type})"
+
+    def get_full_name_or_username(self):
+        return self.user.first_name or self.user.username

@@ -1,1 +1,2 @@
-# Empty by default unless initialization logic is needed
+# inventory/__init__.py
+default_app_config = 'inventory.apps.InventoryConfig'

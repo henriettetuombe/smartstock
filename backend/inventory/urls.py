@@ -15,8 +15,8 @@ router.register(r'categories', CategoryViewSet, basename='category')
 
 # === URL patterns ===
 urlpatterns = [
-    path('', include(router.urls)),                    # /api/items/, /api/categories/
-    path('user/', current_user_view, name='user'),     # /api/user/
-    path('token/', get_auth_token, name='get-token'),  # /api/token/
-    path('register/', register_user, name='register'), # /api/register/
+    path('', include(router.urls)),                      # /api/items/, /api/categories/
+    path('user/', current_user_view, name='user-info'),  # GET: /api/user/
+    path('token/', get_auth_token, name='get-token'),    # POST: /api/token/
+    path('register/', register_user, name='register'),   # POST: /api/register/
 ]
