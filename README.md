@@ -136,14 +136,3 @@ African Leadership University – Rwanda
 ## License
 
 MIT License
-
-## Submission Summary
-
-| Asset                  | Location                  |
-|------------------------|---------------------------|
-| GitHub Repo            | https://github.com/henriettetuombe/smartstock |
-| Demo Video             | /demo_video/demo.mp4      |
-| Screenshots            | /Screenshots/             |
-| Final Submission (Zip) | SmartStock_Submission.zip |
-
-Ready for submission on Canvas.
