@@ -12,7 +12,7 @@ const translations = {
     feature_3_desc: "Works perfectly on all devices.",
     feature_4: "Analytics",
     feature_4_desc: "Visualize your stock trends in real-time.",
-    footer_text: "© 2025 SmartStock. All rights reserved.",
+    footer_text: "© 2025 SmartStock. All rights reserved."
   },
   fr: {
     hero_title: "Gestion de Stock Simplifiée",
@@ -27,7 +27,7 @@ const translations = {
     feature_3_desc: "Fonctionne parfaitement sur tous les appareils.",
     feature_4: "Analytique",
     feature_4_desc: "Visualisez vos tendances de stock en temps réel.",
-    footer_text: "© 2025 SmartStock. Tous droits réservés.",
+    footer_text: "© 2025 SmartStock. Tous droits réservés."
   },
   rw: {
     hero_title: "Gucunga Stokis Byoroshye",
@@ -42,8 +42,8 @@ const translations = {
     feature_3_desc: "Ikoreshwa kuri mudasobwa na telefoni.",
     feature_4: "Ibyegeranyo",
     feature_4_desc: "Reba amakuru ya stokis mu buryo bw’amashusho.",
-    footer_text: "© 2025 SmartStock. Uburenganzira bwose burabitswe.",
-  },
+    footer_text: "© 2025 SmartStock. Uburenganzira bwose burabitswe."
+  }
 };
 
 const currentLang = localStorage.getItem("lang") || "en";
@@ -57,8 +57,15 @@ function translate(lang) {
     }
   });
   localStorage.setItem("lang", lang);
-  document.getElementById("currentLang").textContent =
-    lang === "rw" ? "Kinyarwanda" : lang === "fr" ? "Français" : "English";
+
+  // Update the language display label
+  const langLabel = document.getElementById("currentLang");
+  if (langLabel) {
+    langLabel.textContent =
+      lang === "rw" ? "Kinyarwanda" :
+      lang === "fr" ? "Français" :
+      "English";
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -67,15 +74,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const button = document.getElementById("langButton");
   const dropdown = document.getElementById("langDropdown");
 
-  button.addEventListener("click", () => {
-    dropdown.classList.toggle("hidden");
-  });
-
-  dropdown.querySelectorAll("li").forEach((item) => {
-    item.addEventListener("click", () => {
-      const selectedLang = item.getAttribute("data-lang");
-      translate(selectedLang);
-      dropdown.classList.add("hidden");
+  if (button && dropdown) {
+    button.addEventListener("click", () => {
+      dropdown.classList.toggle("hidden");
     });
-  });
+
+    dropdown.querySelectorAll("li").forEach((item) => {
+      item.addEventListener("click", () => {
+        const selectedLang = item.getAttribute("data-lang");
+        translate(selectedLang);
+        dropdown.classList.add("hidden");
+      });
+    });
+  }
 });

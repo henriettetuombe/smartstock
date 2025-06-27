@@ -152,6 +152,41 @@
         gap: 1rem;
       }
     }
+@media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .add-item-form {
+    padding: 1rem;
+  }
+
+  table, th, td {
+    font-size: 0.875rem;
+    word-break: break-word;
+  }
+}
+
   </style>
 </head>
 <body>

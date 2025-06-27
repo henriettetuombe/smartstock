@@ -45,7 +45,7 @@
   "businessReady": "Biteguye Ubucuruzi",
   "audience": "Abakoresha",
   "shopsKiosks": "Ububiko & Amasoko",
-  "wholesalers": "Abacuruzi B'inkuru nini",
+  "wholesalers": "Abacuruzi B’inkuru nini",
   "homesIndividuals": "Imiryango & Abantu ku giti cyabo",
   "ngosStudents": "Imiryango itegamiye kuri Leta & Abanyeshuri",
   "support": "Ubufasha",
@@ -94,5 +94,46 @@
   "fees": "amafaranga",
   "signup": "Iyandikishe",
   "alreadyAccount": "Usanzwe ufite konti?",
-  "loginHere": "Injira hano"
+  "loginHere": "Injira hano",
+
+  "totalStockValue": "Agaciro k'ibicuruzwa byose",
+  "itemsTracked": "ibicuruzwa bikurikiranywe",
+  "inventoryInsights": "Ibyavuye mu isesengura",
+  "lastUpdated": "Byavuguruwe",
+  "admin": "Admin",
+
+  "inventoryActivity": "Ibikorwa by’ububiko",
+  "recentlyAdded": "Byongewe vuba",
+  "recentlyUpdated": "Byavuguruwe vuba",
+  "deletedItems": "Byasibwe",
+  "totalItemsTracked": "Ibicuruzwa byose bikurikiranywe",
+
+  "inventoryTable": "Imbonerahamwe y’ububiko",
+  "item": "Igicuruzwa",
+  "date": "Itariki",
+  "quantityColumn": "Umubare",
+  "statusColumn": "Imiterere",
+
+  "noData": "Nta bicuruzwa bihari",
+  "backToDashboard": "Subira ku rubuga nyamukuru",
+  "addItemTitle": "Ongeraho Igicuruzwa Gishya",
+  "updateItemTitle": "Hindura Igicuruzwa",
+  "deleteItemTitle": "Siba Igicuruzwa",
+
+  "addButton": "Ongeraho Igicuruzwa",
+  "updateButton": "Hindura Igicuruzwa",
+  "deleteButton": "Siba Igicuruzwa",
+
+  "itemAddedSuccess": "Igicuruzwa cyongewe neza",
+  "itemUpdatedSuccess": "Igicuruzwa cyavuguruwe neza",
+  "itemDeletedSuccess": "Igicuruzwa cyasibwe neza",
+  "noItemSelected": "Hitamo igicuruzwa nibura kimwe",
+
+  "settingsTitle": "Igenamiterere rya porogaramu",
+  "chooseLanguage": "Hitamo Ururimi",
+  "chooseTheme": "Hitamo insanganyamatsiko",
+  "enableNotifications": "Emeza impuruza",
+  "logoutConfirm": "Urashaka koko gusohoka?",
+  "logoutSuccess": "Wasohotse neza.",
+  "footerTextExtended": "© 2025 SmartStock. Yakozwe na Henriette ku bafatabuguzi n’abacuruzi."
 }

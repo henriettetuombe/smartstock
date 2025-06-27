@@ -94,5 +94,46 @@
   "fees": "frais",
   "signup": "S'inscrire",
   "alreadyAccount": "Vous avez déjà un compte ?",
-  "loginHere": "Se connecter"
+  "loginHere": "Se connecter",
+
+  "totalStockValue": "Valeur totale du stock",
+  "itemsTracked": "article(s) suivis",
+  "inventoryInsights": "Aperçus de l'inventaire",
+  "lastUpdated": "Dernière mise à jour",
+  "admin": "Administrateur",
+
+  "inventoryActivity": "Activité d'inventaire",
+  "recentlyAdded": "Récemment ajouté",
+  "recentlyUpdated": "Récemment mis à jour",
+  "deletedItems": "Articles supprimés",
+  "totalItemsTracked": "Articles suivis au total",
+
+  "inventoryTable": "Tableau d'inventaire",
+  "item": "Article",
+  "date": "Date",
+  "quantityColumn": "Quantité",
+  "statusColumn": "Statut",
+
+  "noData": "Aucun article disponible",
+  "backToDashboard": "Retour au tableau de bord",
+  "addItemTitle": "Ajouter un nouvel article",
+  "updateItemTitle": "Mettre à jour l'article",
+  "deleteItemTitle": "Supprimer l'article",
+
+  "addButton": "Ajouter un article",
+  "updateButton": "Mettre à jour l'article",
+  "deleteButton": "Supprimer l'article",
+
+  "itemAddedSuccess": "Article ajouté avec succès",
+  "itemUpdatedSuccess": "Article mis à jour avec succès",
+  "itemDeletedSuccess": "Article supprimé avec succès",
+  "noItemSelected": "Veuillez sélectionner au moins un article",
+
+  "settingsTitle": "Paramètres de l'application",
+  "chooseLanguage": "Choisir la langue",
+  "chooseTheme": "Choisir le thème",
+  "enableNotifications": "Activer les notifications",
+  "logoutConfirm": "Êtes-vous sûr de vouloir vous déconnecter ?",
+  "logoutSuccess": "Vous avez été déconnecté.",
+  "footerTextExtended": "© 2025 SmartStock. Développé par Henriette pour les entreprises et les foyers."
 }

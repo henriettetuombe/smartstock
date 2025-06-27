@@ -95,5 +95,46 @@
   "signup": "Sign up",
   "alreadyAccount": "Already have an account?",
   "loginHere": "Log in",
-  "createAccountRw": "Iyandikishe"
+  "createAccountRw": "Iyandikishe",
+
+  "totalStockValue": "Total Stock Value",
+  "itemsTracked": "item(s) tracked",
+  "inventoryInsights": "Inventory Insights",
+  "lastUpdated": "Last updated",
+  "admin": "Admin",
+
+  "inventoryActivity": "Inventory Activity",
+  "recentlyAdded": "Recently Added",
+  "recentlyUpdated": "Recently Updated",
+  "deletedItems": "Deleted Items",
+  "totalItemsTracked": "Total Items Tracked",
+
+  "inventoryTable": "Inventory Table",
+  "item": "Item",
+  "date": "Date",
+  "quantityColumn": "Quantity",
+  "statusColumn": "Status",
+
+  "noData": "No items available",
+  "backToDashboard": "Back to Dashboard",
+  "addItemTitle": "Add New Item",
+  "updateItemTitle": "Update Item",
+  "deleteItemTitle": "Delete Item",
+
+  "addButton": "Add Item",
+  "updateButton": "Update Item",
+  "deleteButton": "Delete Item",
+
+  "itemAddedSuccess": "Item added successfully",
+  "itemUpdatedSuccess": "Item updated successfully",
+  "itemDeletedSuccess": "Item deleted successfully",
+  "noItemSelected": "Please select at least one item",
+
+  "settingsTitle": "App Settings",
+  "chooseLanguage": "Choose Language",
+  "chooseTheme": "Choose Theme",
+  "enableNotifications": "Enable Notifications",
+  "logoutConfirm": "Are you sure you want to log out?",
+  "logoutSuccess": "You have been logged out.",
+  "footerTextExtended": "© 2025 SmartStock. Built by Henriette for businesses and households."
 }

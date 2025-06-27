@@ -336,6 +336,22 @@
       document.getElementById("deletedItems").textContent = deleted;
       document.getElementById("totalItems").textContent = items.length;
 
+      // 🔔 Notification logic (no emojis)
+      document.getElementById("notificationBtn").addEventListener("click", () => {
+        const lowItems = items.filter(i => {
+          const status = i.status.toLowerCase();
+          return status.includes("low") || status.includes("out");
+        });
+
+        if (lowItems.length === 0) {
+          alert("All items are sufficiently stocked.");
+        } else {
+          const alertList = lowItems.map(i => `${i.name} — ${i.status.replace("_", " ").toUpperCase()}`).join("\n");
+          alert("Stock Alerts:\n\n" + alertList);
+        }
+      });
+
+      // 🔍 Search filter
       document.getElementById("searchInput").addEventListener("input", e => {
         const value = e.target.value.toLowerCase();
         document.querySelectorAll("#inventoryTableBody tr").forEach(row => {
@@ -350,5 +366,6 @@
     }
   });
 </script>
+
 </body>
 </html>

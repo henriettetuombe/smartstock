@@ -1,24 +1,26 @@
-
 # SmartStock – Scalable Inventory Management Web App
 
-SmartStock is a multilingual, user-friendly inventory management system designed for small businesses and individuals. It enables users to track their stock in real time, perform CRUD operations, and access the system in multiple languages (English, Kinyarwanda, Swahili, and French). The system is optimized for both desktop and mobile users.
+SmartStock is a multilingual, mobile-friendly inventory management system built to help individuals and small businesses easily track stock levels in real time. The app supports full CRUD operations, real-time low-stock alerts, and multiple language options (English, Kinyarwanda, French). It’s designed for both mobile and desktop users, providing a clean, responsive interface.
 
 ## GitHub Repository
+
 https://github.com/henriettetuombe/smartstock
 
 ## How to Set Up the Project
 
 ### 1. Clone the Repository
+
 ```bash
 git clone https://github.com/henriettetuombe/smartstock.git
 cd smartstock
 ```
 
 ### 2. Backend Setup (Django)
+
 ```bash
 cd backend
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+python -m venv env
+source env/bin/activate      # On Windows: env\Scripts\activate
 pip install -r requirements.txt
 python manage.py migrate
 python manage.py runserver
@@ -26,118 +28,122 @@ python manage.py runserver
 
 ### 3. Frontend Setup
 
-If using HTML/CSS:
-- Open `index.html` in any browser.
-
-If using React:
-```bash
-cd frontend
-npm install
-npm start
-```
+If using plain HTML/JS:
+- Open `frontend/html/index.html` or `dashboard.html` in your browser.
+- Ensure the Django server is running for API-based features to function.
 
 ## Project Structure
+
 ```
 smartstock/
-├── backend/           # Django REST API
-├── frontend/          # HTML/JS/React frontend
-├── database/          # ER diagram and DB schema
-├── designs/           # UI designs (desktop & mobile)
-├── deployment/        # Deployment steps & screenshots
-├── demo_video/        # Demo video (mp4)
-├── README.md          # This documentation file
+├── backend/              # Django backend logic & API
+│   ├── inventory/        # Inventory app
+│   ├── smartstock/       # Django project config
+│   ├── static/           # Static files (JS, CSS, etc.)
+│   ├── db.sqlite3        # Development DB
+│   └── manage.py
+│
+├── frontend/             # HTML/CSS/JS frontend
+│   ├── html/             # Pages (dashboard, settings, etc.)
+│   ├── css/              # Stylesheets
+│   ├── js/               # Script logic
+│   ├── images/           # UI graphics/icons
+│   └── lang/             # JSON translation files
+│
+├── demo_video/           # Final project demo video
+├── Screenshots/          # Screenshots showing functionality
+├── .gitignore
+└── README.md
 ```
 
-## User Interface Designs
+## Key Features
 
-Design mockups available in the `/designs` folder:
-- login-desktop, login-mobile
-- signup-desktop, signup-mobile
-- SmartStock_Desktop_Add item, Update item, Delete item
-- SmartStock_Mobile_Add, Update, Delete, and Dashboard
-- Fully responsive design
-- Multilingual layout considerations
-- Light/dark contrast options
+- Inventory management (CRUD)
+- Low stock and out-of-stock notifications
+- Multilingual interface (EN, FR, RW)
+- Mobile-responsive layout
+- User preferences stored in local storage
+- Simple and clean user interface
 
-Style Guide included: `style-guide.pdf`
+## Backend Highlights
 
-## Backend Features
-
-- Built with Django REST Framework
-- API endpoints to Create, Read, Update, Delete inventory items
-- JWT/Session-based authentication
-- User-specific inventory access
-- PostgreSQL database (or SQLite for dev)
-
-Sample API routes:
-```
-POST /api/items/
-GET /api/items/
-PUT /api/items/{id}/
-DELETE /api/items/{id}/
-```
-
-## Database Schema
-
-ER Diagram available in `/database/erd.png`
-
-Key Tables:
-- User
-- Item
-- Category
-- Transaction *(future enhancement)*
+- Built with Django
+- Uses SQLite3 for local development
+- API-ready structure with support for CRUD
+- Static file support and authentication ready
 
 ## Multilingual Support
 
 Languages supported:
 - English
 - French
-- Swahili
 - Kinyarwanda
 
-Each UI label and message is dynamically translated based on user preference.
-
-## Deployment Plan
-
-This app is prepared for deployment with:
-
-| Component     | Platform           |
-|---------------|--------------------|
-| Frontend      | Vercel / Netlify   |
-| Backend       | Railway / Heroku   |
-| Database      | Supabase PostgreSQL|
-
-Steps:
-1. Push frontend to Vercel.
-2. Push backend to Railway.
-3. Connect Railway to Supabase.
-4. Set environment variables.
+Language files are found in `frontend/lang/` and use JavaScript with `data-i18n` attributes to update content dynamically.
 
 ## Demo Video
-Located in `/demo_video/demo.mp4`  
-Duration: ~7 minutes  
-Covers: UI, backend, multilingual demo, deployment
 
-## Key Features Recap
-- User authentication
-- Inventory CRUD operations
-- Language selector
-- Responsive UI
-- Clean DB architecture
-- Ready for deployment
+Location: `/demo_video/demo.mp4`  
+Duration: 5 minutes
+
+Covers:
+- Dashboard overview
+- Add, update, delete item demo
+- Notifications and stock level indicators
+- Language switch and responsiveness
+
+## Screenshots
+
+All screenshots are stored in `/Screenshots/`, showing:
+- Dashboard
+- Notifications
+- Forms (add/update/delete)
+- Mobile responsiveness
+- Language toggle in action
+
+## Testing Strategies and Results
+
+- CRUD functionality tested with valid/invalid inputs
+- Mobile responsiveness tested on various screen sizes
+- Checked on Chrome, Edge, Firefox browsers
+- Storage of user preferences validated with LocalStorage
+- Stock threshold alerts confirmed working
+
+## Performance
+
+| Feature                    | Result         |
+|---------------------------|----------------|
+| CRUD                      | Working         |
+| Notifications             | Triggered correctly |
+| Language Switching        | Dynamic          |
+| Mobile Responsiveness     | Confirmed        |
+| Settings Storage          | Functional       |
 
 ## Tech Stack
 
-| Layer       | Technology                 |
-|-------------|----------------------------|
-| Frontend    | HTML/CSS/JS or React.js    |
-| Backend     | Django + Django REST API   |
-| Database    | PostgreSQL / SQLite        |
-| Deployment  | Railway, Vercel, Supabase  |
+| Layer       | Technology         |
+|-------------|--------------------|
+| Frontend    | HTML, CSS, JavaScript |
+| Backend     | Django               |
+| Database    | SQLite3              |
 
 ## Author
+
 Henriette Tuombe  
-Bachelor of Software Engineering – ALU Rwanda
+Bachelor of Software Engineering  
+African Leadership University – Rwanda
 
 ## License
+
 MIT License
+
+## Submission Summary
+
+| Asset                  | Location                  |
+|------------------------|---------------------------|
+| GitHub Repo            | https://github.com/henriettetuombe/smartstock |
+| Demo Video             | /demo_video/demo.mp4      |
+| Screenshots            | /Screenshots/             |
+| Final Submission (Zip) | SmartStock_Submission.zip |
+
+Ready for submission on Canvas.

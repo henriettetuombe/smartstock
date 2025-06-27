@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Update Item – SmartStock</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/feather-icons"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -40,6 +40,7 @@
       transition: background 0.2s;
     }
     .sidebar nav a:hover, .sidebar nav a.active { background: #1e2e4a; }
+
     main { flex: 1; display: flex; flex-direction: column; }
     .top-bar {
       display: flex;
@@ -76,18 +77,16 @@
       justify-content: center;
       font-weight: bold;
     }
-    .content {
-      padding: 2rem 3rem;
-    }
-    .section-title {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-    }
+    .content { padding: 2rem 3rem; }
+    .section-title { font-size: 1.5rem; margin-bottom: 1rem; }
+
     .toolbar {
       display: flex;
       justify-content: space-between;
       margin-bottom: 1rem;
       position: relative;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
     .btn-sm {
       padding: 0.4rem 0.8rem;
@@ -110,6 +109,7 @@
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
       display: none;
       flex-direction: column;
+      z-index: 10;
     }
     .filter-dropdown button {
       padding: 0.5rem 1rem;
@@ -117,6 +117,11 @@
       border: none;
       text-align: left;
       cursor: pointer;
+    }
+
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
     }
     table {
       width: 100%;
@@ -130,8 +135,13 @@
       padding: 0.75rem 1rem;
       text-align: left;
       border-bottom: 1px solid #eee;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 120px;
     }
     th { background: #f9fafc; }
+
     .sticky-footer {
       text-align: right;
       margin-top: 1rem;
@@ -150,6 +160,31 @@
       padding: 2rem;
       font-size: 0.875rem;
       color: #777;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard { flex-direction: column; }
+      .sidebar {
+        width: 100%;
+        text-align: center;
+        padding: 1rem;
+      }
+      .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem;
+      }
+      .content { padding: 1rem; }
+      .toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      th, td {
+        font-size: 0.85rem;
+        white-space: nowrap;
+      }
+      .filter-dropdown { right: 1rem; }
     }
   </style>
 </head>
@@ -196,21 +231,23 @@
           </div>
         </div>
         <form id="updateForm">
-          <table>
-            <thead>
-              <tr>
-                <th><input type="checkbox" /></th>
-                <th>Item</th>
-                <th>Date</th>
-                <th>Category</th>
-                <th>Quantity</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="itemTableBody">
-              <tr><td colspan="6">Loading items...</td></tr>
-            </tbody>
-          </table>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th><input type="checkbox" /></th>
+                  <th>Item</th>
+                  <th>Date</th>
+                  <th>Category</th>
+                  <th>Quantity</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="itemTableBody">
+                <tr><td colspan="6">Loading items...</td></tr>
+              </tbody>
+            </table>
+          </div>
           <div class="sticky-footer">
             <button type="submit" class="save-btn"><i data-feather="save"></i> Save Changes</button>
           </div>

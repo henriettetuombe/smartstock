@@ -16,6 +16,7 @@
     .dashboard {
       display: flex;
       min-height: 100vh;
+      flex-direction: row;
     }
     .sidebar {
       width: 250px;
@@ -57,11 +58,14 @@
       background: #fff;
       padding: 1rem 2rem;
       border-bottom: 1px solid #ddd;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
     .profile-box {
       display: flex;
       align-items: center;
       gap: 1rem;
+      flex-wrap: wrap;
     }
     .search-input {
       padding: 0.5rem 1rem;
@@ -70,11 +74,10 @@
       outline: none;
     }
     .profile {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-direction: row; /* ensure avatar and name are side by side */
-}
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
     .avatar {
       width: 36px;
       height: 36px;
@@ -118,6 +121,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
     .delete-confirm .buttons button {
       padding: 0.5rem 1rem;
@@ -133,13 +138,34 @@
     .btn-gray {
       background: #6c757d;
       color: white;
-      margin-left: 0.5rem;
     }
     .dashboard-footer {
       text-align: center;
       padding: 2rem;
       font-size: 0.875rem;
       color: #777;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        padding: 1rem;
+        text-align: center;
+      }
+      .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .content {
+        padding: 1rem;
+      }
+      table, th, td {
+        font-size: 0.85rem;
+        word-break: break-word;
+      }
     }
   </style>
 </head>
@@ -174,7 +200,6 @@
 
       <section class="content">
         <h2 class="section-title">Delete Item</h2>
-
         <table>
           <thead>
             <tr>
