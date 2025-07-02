@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # === Security Settings ===
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-your-secret-key')
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
-ALLOWED_HOSTS = ['*']  # In production, replace * with your domain or IP
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
 # === Installed Applications ===
 INSTALLED_APPS = [
@@ -25,13 +25,14 @@ INSTALLED_APPS = [
     'corsheaders',
 
     # Local apps
-    'inventory.apps.InventoryConfig',  # ✅ ensures signals are loaded
+    'inventory.apps.InventoryConfig',
 ]
 
 # === Middleware ===
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # CORS must be first
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise after SecurityMiddleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -64,11 +65,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'smartstock.wsgi.application'
 
 # === Database Configuration ===
+import dj_database_url
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(default=f'sqlite:///{BASE_DIR / "db.sqlite3"}')
 }
 
 # === Password Validators ===
@@ -88,17 +88,15 @@ USE_TZ = True
 
 # === Static Files ===
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # === Default Primary Key Field Type ===
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # === CORS Configuration ===
-CORS_ALLOW_ALL_ORIGINS = False
-CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:5500',  # ✅ Allow Live Server frontend
-    'http://localhost:5500',
-]
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 # === REST Framework Settings ===
