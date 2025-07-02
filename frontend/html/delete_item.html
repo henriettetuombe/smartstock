@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Delete Item – SmartStock</title>
+  <title data-i18n="delete_item_title">Delete Item – SmartStock</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/feather-icons"></script>
   <style>
@@ -89,6 +89,44 @@
       justify-content: center;
       font-weight: bold;
     }
+    .language-container {
+      position: relative;
+      font-size: 0.9rem;
+    }
+    #langButton {
+      background: none;
+      border: none;
+      font: inherit;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 5px;
+      color: #003366;
+    }
+    #langDropdown {
+      list-style: none;
+      margin: 0;
+      padding: 0.5rem 0;
+      position: absolute;
+      top: 35px;
+      right: 0;
+      background: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      min-width: 180px;
+      z-index: 999;
+    }
+    #langDropdown li {
+      padding: 8px 16px;
+      cursor: pointer;
+      white-space: nowrap;
+      color: #003366;
+    }
+    #langDropdown li:hover { background: #f0f0f0; }
+    .hidden { display: none; }
     .content {
       padding: 2rem 3rem;
     }
@@ -145,7 +183,6 @@
       font-size: 0.875rem;
       color: #777;
     }
-
     @media (max-width: 768px) {
       .dashboard {
         flex-direction: column;
@@ -174,66 +211,68 @@
     <aside class="sidebar">
       <div class="logo"><i data-feather="box"></i><span>SmartStock</span></div>
       <nav>
-        <a href="dashboard.html"><i data-feather="home"></i>Dashboard</a>
-        <a href="add_item.html"><i data-feather="plus-circle"></i>Add Item</a>
-        <a href="update_item.html"><i data-feather="edit-3"></i>Update Item</a>
-        <a class="active" href="delete_item.html"><i data-feather="trash-2"></i>Delete Item</a>
-        <a href="settings.html"><i data-feather="settings"></i>Settings</a>
-        <a href="#" onclick="logout()"><i data-feather="log-out"></i>Log Out</a>
+        <a href="dashboard.html"><i data-feather="home"></i><span data-i18n="dashboard">Dashboard</span></a>
+        <a href="add_item.html"><i data-feather="plus-circle"></i><span data-i18n="add_item">Add Item</span></a>
+        <a href="update_item.html"><i data-feather="edit-3"></i><span data-i18n="update_item">Update Item</span></a>
+        <a class="active" href="delete_item.html"><i data-feather="trash-2"></i><span data-i18n="delete_item">Delete Item</span></a>
+        <a href="settings.html"><i data-feather="settings"></i><span data-i18n="settings">Settings</span></a>
+        <a href="#" onclick="logout()"><i data-feather="log-out"></i><span data-i18n="logout">Log Out</span></a>
       </nav>
     </aside>
-
     <main>
       <header class="top-bar">
         <div>
-          <h1 id="welcomeText">Welcome back</h1>
-          <p class="subtitle">Let’s keep your inventory up to date</p>
+          <h1 id="welcomeText" data-i18n="welcome">Welcome back</h1>
+          <p class="subtitle" data-i18n="delete_item_subtitle">Manage your inventory safely</p>
         </div>
         <div class="profile-box">
-          <input type="text" class="search-input" placeholder="Search here..." />
+          <input type="text" class="search-input" data-i18n-placeholder="search_placeholder"/>
           <div class="profile">
+            <div class="language-container">
+              <button id="langButton"><i data-feather="globe"></i><span id="currentLang">English</span></button>
+              <ul id="langDropdown" class="hidden">
+                <li data-lang="en">🇬🇧 English</li>
+                <li data-lang="rw">🇷🇼 Kinyarwanda</li>
+                <li data-lang="fr">🇫🇷 Français</li>
+              </ul>
+            </div>
             <span><strong id="profileName">User</strong></span>
             <div class="avatar" id="profileInitial">U</div>
           </div>
         </div>
       </header>
-
       <section class="content">
-        <h2 class="section-title">Delete Item</h2>
+        <h2 class="section-title" data-i18n="delete_item">Delete Items</h2>
         <table>
           <thead>
             <tr>
               <th><input type="checkbox" id="selectAll" /></th>
-              <th>Item</th>
-              <th>Date</th>
-              <th>Category</th>
-              <th>Quantity</th>
-              <th>Status</th>
+              <th data-i18n="item">Item</th>
+              <th data-i18n="date">Date</th>
+              <th data-i18n="category">Category</th>
+              <th data-i18n="quantity">Quantity</th>
+              <th data-i18n="status">Status</th>
             </tr>
           </thead>
           <tbody id="itemTableBody">
-            <tr><td colspan="6">Loading items...</td></tr>
+            <tr><td colspan="6" data-i18n="no_data">Loading items...</td></tr>
           </tbody>
         </table>
-
         <div class="delete-confirm">
-          <p>Are you sure you want to delete <span id="selectedCount">selected item(s)</span>?</p>
+          <p data-i18n="delete_confirm">Are you sure you want to delete <span id="selectedCount">selected item(s)</span>?</p>
           <div class="buttons">
-            <button id="confirmDelete" class="btn-green">Yes</button>
-            <button id="cancelDelete" class="btn-gray">No</button>
+            <button id="confirmDelete" class="btn-green" data-i18n="yes">Yes</button>
+            <button id="cancelDelete" class="btn-gray" data-i18n="no">No</button>
           </div>
         </div>
       </section>
-
-      <footer class="dashboard-footer">
-        © 2025 SmartStock. Built by Henriette for individuals and businesses.
-      </footer>
+      <footer class="dashboard-footer" data-i18n="footer_text">© 2025 SmartStock. Built by Henriette for individuals and businesses.</footer>
     </main>
   </div>
-
   <script>
     feather.replace();
     const token = localStorage.getItem('access_token');
+    if (!token) logout();
 
     function logout() {
       localStorage.removeItem('access_token');
@@ -241,85 +280,109 @@
     }
 
     async function fetchUserInfo() {
-      try {
-        const res = await fetch('http://localhost:8000/api/user/', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const user = await res.json();
-        const name = user.first_name || user.username || 'User';
-        document.getElementById('profileInitial').textContent = name[0].toUpperCase();
-        document.getElementById('profileName').textContent = name;
-        document.getElementById('welcomeText').textContent = `Welcome back, ${name}`;
-      } catch (err) {
-        console.error('User info error:', err);
-        logout();
-      }
+      const res = await fetch('http://localhost:8000/api/user/', { headers: { 'Authorization': `Bearer ${token}` } });
+      const user = await res.json();
+      const name = user.first_name || user.username || 'User';
+      document.getElementById('profileInitial').textContent = name.charAt(0).toUpperCase();
+      document.getElementById('profileName').textContent = name;
+      document.getElementById('welcomeText').textContent = `${translations?.welcome || 'Welcome back'}, ${name}`;
     }
 
     async function loadItems() {
+      const res = await fetch('http://localhost:8000/api/items/', { headers: { 'Authorization': `Bearer ${token}` } });
+      const items = await res.json();
       const tbody = document.getElementById('itemTableBody');
-      try {
-        const res = await fetch('http://localhost:8000/api/items/', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const items = await res.json();
-        tbody.innerHTML = '';
-        items.forEach(item => {
-          const tr = document.createElement('tr');
-          tr.dataset.id = item.id;
-          tr.innerHTML = `
-            <td><input type="checkbox" class="selectRow" /></td>
-            <td>${item.name}</td>
-            <td>${new Date(item.date_added).toLocaleDateString()}</td>
-            <td>${item.category.name}</td>
-            <td>${item.quantity}</td>
-            <td>${item.status.replace(/_/g, ' ')}</td>
-          `;
-          tbody.appendChild(tr);
-        });
-      } catch (err) {
-        console.error('Failed to load items:', err);
-        tbody.innerHTML = '<tr><td colspan="6">Failed to load items.</td></tr>';
-      }
+      tbody.innerHTML = '';
+      items.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.dataset.id = item.id;
+        tr.innerHTML = `
+          <td><input type="checkbox" class="selectRow" /></td>
+          <td>${item.name}</td>
+          <td>${new Date(item.date_added).toLocaleDateString()}</td>
+          <td>${item.category.name}</td>
+          <td>${item.quantity}</td>
+          <td>${item.status.replace(/_/g, ' ')}</td>
+        `;
+        tbody.appendChild(tr);
+      });
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      fetchUserInfo();
-      loadItems();
+    const langButton = document.getElementById("langButton");
+    const langDropdown = document.getElementById("langDropdown");
+    const currentLangSpan = document.getElementById("currentLang");
+    let translations = {};
 
-      document.getElementById('selectAll').addEventListener('change', function () {
-        document.querySelectorAll('.selectRow').forEach(checkbox => {
-          checkbox.checked = this.checked;
+    langButton.addEventListener("click", () => langDropdown.classList.toggle("hidden"));
+    document.addEventListener("click", (e) => {
+      if (!langButton.contains(e.target) && !langDropdown.contains(e.target)) {
+        langDropdown.classList.add("hidden");
+      }
+    });
+
+    function loadTranslations(lang) {
+      fetch(`../lang/${lang}.json`).then(res => res.json()).then(data => {
+        translations = data;
+        document.querySelectorAll("[data-i18n]").forEach(el => {
+          const key = el.getAttribute("data-i18n");
+          if (data[key]) el.textContent = data[key];
+        });
+        document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+          const key = el.getAttribute("data-i18n-placeholder");
+          if (data[key]) el.placeholder = data[key];
         });
       });
+    }
 
-      document.getElementById('itemTableBody').addEventListener('change', () => {
-        const checked = document.querySelectorAll('.selectRow:checked');
-        const names = Array.from(checked).map(cb =>
-          cb.closest('tr').querySelector('td:nth-child(2)').textContent
-        );
-        document.getElementById('selectedCount').textContent = names.length ? names.join(', ') : 'selected item(s)';
-      });
+    function updateCurrentLang(lang) {
+      const labelMap = { en: "English", rw: "Kinyarwanda", fr: "Français" };
+      currentLangSpan.textContent = labelMap[lang] || "English";
+    }
 
-      document.getElementById('confirmDelete').addEventListener('click', async () => {
-        const selected = Array.from(document.querySelectorAll('.selectRow:checked'));
-        for (let checkbox of selected) {
-          const row = checkbox.closest('tr');
-          const id = row.dataset.id;
-          await fetch(`http://localhost:8000/api/items/${id}/`, {
-            method: 'DELETE',
-            headers: { 'Authorization': `Bearer ${token}` }
-          });
-        }
-        alert('Selected items deleted successfully.');
-        loadItems();
+    document.querySelectorAll("#langDropdown li").forEach(item => {
+      item.addEventListener("click", () => {
+        const lang = item.getAttribute("data-lang");
+        localStorage.setItem("selectedLang", lang);
+        updateCurrentLang(lang);
+        loadTranslations(lang);
+        langDropdown.classList.add("hidden");
       });
+    });
 
-      document.getElementById('cancelDelete').addEventListener('click', () => {
-        document.querySelectorAll('.selectRow').forEach(cb => cb.checked = false);
-        document.getElementById('selectAll').checked = false;
-        document.getElementById('selectedCount').textContent = 'selected item(s)';
-      });
+    const savedLang = localStorage.getItem("selectedLang") || "en";
+    updateCurrentLang(savedLang);
+    loadTranslations(savedLang);
+    fetchUserInfo();
+    loadItems();
+
+    document.getElementById('selectAll').addEventListener('change', function () {
+      document.querySelectorAll('.selectRow').forEach(cb => cb.checked = this.checked);
+    });
+
+    document.getElementById('itemTableBody').addEventListener('change', () => {
+      const checked = document.querySelectorAll('.selectRow:checked');
+      const names = Array.from(checked).map(cb => cb.closest('tr').querySelector('td:nth-child(2)').textContent);
+      document.getElementById('selectedCount').textContent = names.length ? names.join(', ') : 'selected item(s)';
+    });
+
+    document.getElementById('confirmDelete').addEventListener('click', async () => {
+      const selected = Array.from(document.querySelectorAll('.selectRow:checked'));
+      for (let checkbox of selected) {
+        const row = checkbox.closest('tr');
+        const id = row.dataset.id;
+        await fetch(`http://localhost:8000/api/items/${id}/`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+      }
+      alert('Selected items deleted successfully.');
+      loadItems();
+    });
+
+    document.getElementById('cancelDelete').addEventListener('click', () => {
+      document.querySelectorAll('.selectRow').forEach(cb => cb.checked = false);
+      document.getElementById('selectAll').checked = false;
+      document.getElementById('selectedCount').textContent = 'selected item(s)';
     });
   </script>
 </body>

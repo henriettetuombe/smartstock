@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Add Item – SmartStock</title>
+  <title data-i18n="add_item_title">Add New Item – SmartStock</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/feather-icons"></script>
   <style>
@@ -13,10 +13,7 @@
       background: #f4f6f9;
       color: #333;
     }
-    .dashboard {
-      display: flex;
-      min-height: 100vh;
-    }
+    .dashboard { display: flex; min-height: 100vh; }
     .sidebar {
       width: 250px;
       background: #0f1e34;
@@ -45,11 +42,7 @@
     .sidebar nav a:hover, .sidebar nav a.active {
       background: #1e2e4a;
     }
-    main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
+    main { flex: 1; display: flex; flex-direction: column; }
     .top-bar {
       display: flex;
       justify-content: space-between;
@@ -85,9 +78,46 @@
       justify-content: center;
       font-weight: bold;
     }
-    .content {
-      padding: 2rem 3rem;
+    .language-container {
+      position: relative;
+      font-size: 0.9rem;
     }
+    #langButton {
+      background: none;
+      border: none;
+      font: inherit;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 5px;
+      color: #003366;
+    }
+    #langDropdown {
+      list-style: none;
+      margin: 0;
+      padding: 0.5rem 0;
+      position: absolute;
+      top: 35px;
+      right: 0;
+      background: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      min-width: 180px;
+      z-index: 999;
+    }
+    #langDropdown li {
+      padding: 8px 16px;
+      cursor: pointer;
+      white-space: nowrap;
+      color: #003366;
+    }
+    #langDropdown li:hover { background: #f0f0f0; }
+    .hidden { display: none; }
+
+    .content { padding: 2rem 3rem; }
     .section-title {
       font-size: 1.5rem;
       margin-bottom: 1rem;
@@ -136,9 +166,8 @@
       text-align: left;
       border-bottom: 1px solid #eee;
     }
-    th {
-      background: #f9fafc;
-    }
+    th { background: #f9fafc; }
+
     .dashboard-footer {
       text-align: center;
       padding: 2rem;
@@ -146,47 +175,13 @@
       color: #777;
     }
     @media (max-width: 768px) {
-      .top-bar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-      }
+      .dashboard { flex-direction: column; }
+      .sidebar { width: 100%; padding: 1rem; text-align: center; }
+      .top-bar { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .content { padding: 1rem; }
+      .form-grid { grid-template-columns: 1fr; }
+      .add-item-form { padding: 1rem; }
     }
-@media (max-width: 768px) {
-  .dashboard {
-    flex-direction: column;
-  }
-
-  .sidebar {
-    width: 100%;
-    padding: 1rem;
-    text-align: center;
-  }
-
-  .top-bar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .content {
-    padding: 1rem;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .add-item-form {
-    padding: 1rem;
-  }
-
-  table, th, td {
-    font-size: 0.875rem;
-    word-break: break-word;
-  }
-}
-
   </style>
 </head>
 <body>
@@ -195,12 +190,12 @@
     <aside class="sidebar">
       <div class="logo"><i data-feather="box"></i><span>SmartStock</span></div>
       <nav>
-        <a href="dashboard.html"><i data-feather="home"></i>Dashboard</a>
-        <a class="active" href="#"><i data-feather="plus-circle"></i>Add Item</a>
-        <a href="update_item.html"><i data-feather="edit-3"></i>Update Item</a>
-        <a href="delete_item.html"><i data-feather="trash-2"></i>Delete Item</a>
-        <a href="settings.html"><i data-feather="settings"></i>Settings</a>
-        <a href="#" onclick="logout()"><i data-feather="log-out"></i>Log Out</a>
+        <a href="dashboard.html"><i data-feather="home"></i><span data-i18n="dashboard">Dashboard</span></a>
+        <a class="active" href="#"><i data-feather="plus-circle"></i><span data-i18n="add_item">Add Item</span></a>
+        <a href="update_item.html"><i data-feather="edit-3"></i><span data-i18n="update_item">Update Item</span></a>
+        <a href="delete_item.html"><i data-feather="trash-2"></i><span data-i18n="delete_item">Delete Item</span></a>
+        <a href="settings.html"><i data-feather="settings"></i><span data-i18n="settings">Settings</span></a>
+        <a href="#" onclick="logout()"><i data-feather="log-out"></i><span data-i18n="logout">Log Out</span></a>
       </nav>
     </aside>
 
@@ -208,12 +203,22 @@
     <main>
       <header class="top-bar">
         <div>
-          <h1 id="welcomeText">Welcome back</h1>
-          <p class="subtitle">Let’s keep your inventory up to date</p>
+          <h1 id="welcomeText" data-i18n="welcome">Welcome back</h1>
+          <p class="subtitle" data-i18n="add_new_item">Add New Items to Stock</p>
         </div>
         <div class="profile-box">
-          <input type="text" id="searchInput" class="search-input" placeholder="Search items..." />
+          <input type="text" id="searchInput" class="search-input" data-i18n-placeholder="search_placeholder" />
           <div class="profile">
+            <div class="language-container">
+            <button id="langButton">
+              <i data-feather="globe"></i><span id="currentLang">English</span>
+            </button>
+            <ul id="langDropdown" class="hidden">
+              <li data-lang="en">🇬🇧 English</li>
+              <li data-lang="rw">🇷🇼 Kinyarwanda</li>
+              <li data-lang="fr">🇫🇷 Français</li>
+            </ul>
+          </div>
             <span><strong id="profileName">User</strong></span>
             <div class="avatar" id="profileInitial">U</div>
           </div>
@@ -221,48 +226,47 @@
       </header>
 
       <section class="content">
-        <h2 class="section-title">Add New Items to Stock</h2>
+        <h2 class="section-title" data-i18n="add_new_item">Add New Items to Stock</h2>
         <form class="add-item-form" id="addItemForm">
           <div class="form-grid">
-            <input type="text" id="itemName" placeholder="Item Name" required />
+            <input type="text" id="itemName" data-i18n-placeholder="item_name" required />
             <input type="date" id="itemDate" required />
             <select id="itemCategory" required>
-              <option disabled selected value="">Select Category</option>
+              <option disabled selected value="" data-i18n="select_category">Select Category</option>
             </select>
-            <input type="number" id="itemQuantity" placeholder="Quantity" min="0" required />
+            <input type="number" id="itemQuantity" data-i18n-placeholder="quantity" min="0" required />
             <select id="itemStatus" required>
-              <option value="in_stock">In Stock</option>
-              <option value="running_low">Running Low</option>
-              <option value="out_of_stock">Out of Stock</option>
+              <option value="in_stock" data-i18n="in_stock">In Stock</option>
+              <option value="running_low" data-i18n="running_low">Running Low</option>
+              <option value="out_of_stock" data-i18n="out_of_stock">Out of Stock</option>
             </select>
           </div>
-          <button type="submit" class="save-btn"><i data-feather="plus"></i> Add Item</button>
+          <button type="submit" class="save-btn"><i data-feather="plus"></i><span data-i18n="add_button">Add Item</span></button>
         </form>
 
         <table>
           <thead>
             <tr>
-              <th>Item</th>
-              <th>Date</th>
-              <th>Category</th>
-              <th>Quantity</th>
-              <th>Status</th>
+              <th data-i18n="item">Item</th>
+              <th data-i18n="date">Date</th>
+              <th data-i18n="category">Category</th>
+              <th data-i18n="quantity">Quantity</th>
+              <th data-i18n="status">Status</th>
             </tr>
           </thead>
           <tbody id="itemTableBody">
-            <tr><td colspan="5">Loading items...</td></tr>
+            <tr><td colspan="5" data-i18n="no_data">Loading items...</td></tr>
           </tbody>
         </table>
       </section>
 
-      <footer class="dashboard-footer">
-        © 2025 SmartStock. Built by Henriette for individuals and businesses.
-      </footer>
+      <footer class="dashboard-footer" data-i18n="footer_text">© 2025 SmartStock. Built by Henriette for individuals and businesses.</footer>
     </main>
   </div>
 
   <script>
     feather.replace();
+    let translations = {};
     const token = localStorage.getItem('access_token');
     if (!token) logout();
 
@@ -279,10 +283,9 @@
         const user = await res.json();
         const name = user.first_name?.trim() || user.username || 'User';
         const initial = name.charAt(0).toUpperCase();
-
         document.getElementById('profileInitial').textContent = initial;
         document.getElementById('profileName').textContent = name;
-        document.getElementById('welcomeText').textContent = `Welcome back, ${name}`;
+        document.getElementById('welcomeText').textContent = `${translations?.welcome || 'Welcome back'}, ${name}`;
       } catch (err) {
         console.error('User info error:', err);
         logout();
@@ -356,13 +359,7 @@
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({
-              name,
-              date_added: date,
-              category_id: categoryId,
-              quantity,
-              status
-            })
+            body: JSON.stringify({ name, date_added: date, category_id: categoryId, quantity, status })
           });
 
           if (res.ok) {
@@ -378,6 +375,52 @@
           alert('Something went wrong');
         }
       });
+
+      const langButton = document.getElementById("langButton");
+      const langDropdown = document.getElementById("langDropdown");
+      const currentLangSpan = document.getElementById("currentLang");
+
+      langButton.addEventListener("click", () => langDropdown.classList.toggle("hidden"));
+      document.addEventListener("click", (e) => {
+        if (!langButton.contains(e.target) && !langDropdown.contains(e.target)) {
+          langDropdown.classList.add("hidden");
+        }
+      });
+
+      function loadTranslations(lang) {
+        fetch(`../lang/${lang}.json`)
+          .then(res => res.json())
+          .then(data => {
+            translations = data;
+            document.querySelectorAll("[data-i18n]").forEach(el => {
+              const key = el.getAttribute("data-i18n");
+              if (data[key]) el.textContent = data[key];
+            });
+            document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+              const key = el.getAttribute("data-i18n-placeholder");
+              if (data[key]) el.placeholder = data[key];
+            });
+          });
+      }
+
+      function updateCurrentLang(lang) {
+        const labelMap = { en: "English", rw: "Kinyarwanda", fr: "Français" };
+        currentLangSpan.textContent = labelMap[lang] || "English";
+      }
+
+      document.querySelectorAll("#langDropdown li").forEach(item => {
+        item.addEventListener("click", () => {
+          const lang = item.getAttribute("data-lang");
+          localStorage.setItem("selectedLang", lang);
+          updateCurrentLang(lang);
+          loadTranslations(lang);
+          langDropdown.classList.add("hidden");
+        });
+      });
+
+      const savedLang = localStorage.getItem("selectedLang") || "en";
+      updateCurrentLang(savedLang);
+      loadTranslations(savedLang);
     });
   </script>
 </body>
