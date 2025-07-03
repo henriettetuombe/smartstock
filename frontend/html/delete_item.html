@@ -208,6 +208,7 @@
 </head>
 <body>
   <div class="dashboard">
+    <!-- Sidebar -->
     <aside class="sidebar">
       <div class="logo"><i data-feather="box"></i><span>SmartStock</span></div>
       <nav>
@@ -219,6 +220,8 @@
         <a href="#" onclick="logout()"><i data-feather="log-out"></i><span data-i18n="logout">Log Out</span></a>
       </nav>
     </aside>
+
+    <!-- Main Content -->
     <main>
       <header class="top-bar">
         <div>
@@ -241,6 +244,7 @@
           </div>
         </div>
       </header>
+
       <section class="content">
         <h2 class="section-title" data-i18n="delete_item">Delete Items</h2>
         <table>
@@ -266,11 +270,15 @@
           </div>
         </div>
       </section>
+
       <footer class="dashboard-footer" data-i18n="footer_text">© 2025 SmartStock. Built by Henriette for individuals and businesses.</footer>
     </main>
   </div>
+
+  <!-- JavaScript -->
   <script>
     feather.replace();
+    const API_BASE = "https://smartstock-1-1wm7.onrender.com";
     const token = localStorage.getItem('access_token');
     if (!token) logout();
 
@@ -280,33 +288,73 @@
     }
 
     async function fetchUserInfo() {
-      const res = await fetch('http://localhost:8000/api/user/', { headers: { 'Authorization': `Bearer ${token}` } });
-      const user = await res.json();
-      const name = user.first_name || user.username || 'User';
-      document.getElementById('profileInitial').textContent = name.charAt(0).toUpperCase();
-      document.getElementById('profileName').textContent = name;
-      document.getElementById('welcomeText').textContent = `${translations?.welcome || 'Welcome back'}, ${name}`;
+      try {
+        const res = await fetch(`${API_BASE}/api/user/`, { headers: { 'Authorization': `Bearer ${token}` } });
+        const user = await res.json();
+        const name = user.first_name || user.username || 'User';
+        document.getElementById('profileInitial').textContent = name.charAt(0).toUpperCase();
+        document.getElementById('profileName').textContent = name;
+        document.getElementById('welcomeText').textContent = `${translations?.welcome || 'Welcome back'}, ${name}`;
+      } catch { logout(); }
     }
 
     async function loadItems() {
-      const res = await fetch('http://localhost:8000/api/items/', { headers: { 'Authorization': `Bearer ${token}` } });
-      const items = await res.json();
       const tbody = document.getElementById('itemTableBody');
-      tbody.innerHTML = '';
-      items.forEach(item => {
-        const tr = document.createElement('tr');
-        tr.dataset.id = item.id;
-        tr.innerHTML = `
-          <td><input type="checkbox" class="selectRow" /></td>
-          <td>${item.name}</td>
-          <td>${new Date(item.date_added).toLocaleDateString()}</td>
-          <td>${item.category.name}</td>
-          <td>${item.quantity}</td>
-          <td>${item.status.replace(/_/g, ' ')}</td>
-        `;
-        tbody.appendChild(tr);
-      });
+      tbody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
+      try {
+        const res = await fetch(`${API_BASE}/api/items/`, { headers: { 'Authorization': `Bearer ${token}` } });
+        const items = await res.json();
+        tbody.innerHTML = '';
+        items.forEach(item => {
+          const tr = document.createElement('tr');
+          tr.dataset.id = item.id;
+          tr.innerHTML = `
+            <td><input type="checkbox" class="selectRow" /></td>
+            <td>${item.name}</td>
+            <td>${new Date(item.date_added).toLocaleDateString()}</td>
+            <td>${item.category?.name || item.category}</td>
+            <td>${item.quantity}</td>
+            <td>${item.status.replace(/_/g, ' ')}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch {
+        tbody.innerHTML = '<tr><td colspan="6">Error loading items</td></tr>';
+      }
     }
+
+    document.getElementById('selectAll').addEventListener('change', function () {
+      document.querySelectorAll('.selectRow').forEach(cb => cb.checked = this.checked);
+    });
+
+    document.getElementById('itemTableBody').addEventListener('change', () => {
+      const checked = document.querySelectorAll('.selectRow:checked');
+      const names = Array.from(checked).map(cb => cb.closest('tr').querySelector('td:nth-child(2)').textContent);
+      document.getElementById('selectedCount').textContent = names.length ? names.join(', ') : 'selected item(s)';
+    });
+
+    document.getElementById('confirmDelete').addEventListener('click', async () => {
+      const selected = Array.from(document.querySelectorAll('.selectRow:checked'));
+      if (selected.length === 0) return alert("Please select items to delete.");
+      if (!confirm("Are you sure you want to delete the selected item(s)?")) return;
+
+      for (let cb of selected) {
+        const id = cb.closest('tr').dataset.id;
+        const res = await fetch(`${API_BASE}/api/items/${id}/`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) alert(`Failed to delete item with ID ${id}`);
+      }
+      alert("Selected items deleted successfully.");
+      loadItems();
+    });
+
+    document.getElementById('cancelDelete').addEventListener('click', () => {
+      document.querySelectorAll('.selectRow').forEach(cb => cb.checked = false);
+      document.getElementById('selectAll').checked = false;
+      document.getElementById('selectedCount').textContent = 'selected item(s)';
+    });
 
     const langButton = document.getElementById("langButton");
     const langDropdown = document.getElementById("langDropdown");
@@ -354,36 +402,6 @@
     loadTranslations(savedLang);
     fetchUserInfo();
     loadItems();
-
-    document.getElementById('selectAll').addEventListener('change', function () {
-      document.querySelectorAll('.selectRow').forEach(cb => cb.checked = this.checked);
-    });
-
-    document.getElementById('itemTableBody').addEventListener('change', () => {
-      const checked = document.querySelectorAll('.selectRow:checked');
-      const names = Array.from(checked).map(cb => cb.closest('tr').querySelector('td:nth-child(2)').textContent);
-      document.getElementById('selectedCount').textContent = names.length ? names.join(', ') : 'selected item(s)';
-    });
-
-    document.getElementById('confirmDelete').addEventListener('click', async () => {
-      const selected = Array.from(document.querySelectorAll('.selectRow:checked'));
-      for (let checkbox of selected) {
-        const row = checkbox.closest('tr');
-        const id = row.dataset.id;
-        await fetch(`http://localhost:8000/api/items/${id}/`, {
-          method: 'DELETE',
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-      }
-      alert('Selected items deleted successfully.');
-      loadItems();
-    });
-
-    document.getElementById('cancelDelete').addEventListener('click', () => {
-      document.querySelectorAll('.selectRow').forEach(cb => cb.checked = false);
-      document.getElementById('selectAll').checked = false;
-      document.getElementById('selectedCount').textContent = 'selected item(s)';
-    });
   </script>
 </body>
 </html>

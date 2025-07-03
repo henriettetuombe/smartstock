@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="appName">SmartStock – Inventory Made Simple</title>
+  <title>SmartStock – Inventory Made Simple</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/feather-icons"></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -194,7 +194,7 @@
   <header>
     <div class="logo">
       <i data-feather="box"></i>
-      <span data-i18n="appName">SmartStock</span>
+      <span data-i18n="app_name">SmartStock</span>
     </div>
     <div style="display: flex; align-items: center; gap: 1rem; margin-left: auto;">
       <div class="language-container">
@@ -217,10 +217,10 @@
 
   <section class="hero">
     <div class="hero-text">
-      <h1 data-i18n="hero.title">To Manage Your Business</h1>
-      <p data-i18n="hero.subtitle">SmartStock helps you track inventory, manage stock, and grow your small business. Simple. Secure. Scalable.</p>
+      <h1 data-i18n="landing_headline"></h1>
+      <p data-i18n="landing_subtext"></p>
       <div class="cta-buttons">
-        <a id="startBtn" data-i18n="hero.cta">Start free today →</a>
+        <a id="startBtn" data-i18n="start_free_button"></a>
       </div>
       <div id="g_id_onload"
            data-client_id="170655378518-8ad1hbkokallhindl7ao5c5960b0f9e6.apps.googleusercontent.com"
@@ -238,7 +238,7 @@
     </div>
 
     <div class="hero-image">
-      <img src="../images/shop_inventory.jpg" alt="Business support image" />
+      <img src="../images/shop_inventory.jpg" alt="" data-i18n="landing_image_alt" />
     </div>
   </section>
 
@@ -333,6 +333,17 @@
               el.innerHTML = translations[key];
             }
           });
+
+          document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+            const key = el.getAttribute("data-i18n-placeholder");
+            if (translations[key]) {
+              el.setAttribute("placeholder", translations[key]);
+            }
+          });
+
+          if (translations["landing_page_title"]) {
+            document.title = translations["landing_page_title"];
+          }
         });
     }
   </script>

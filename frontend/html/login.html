@@ -3,16 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title data-i18n="loginPageTitle">Login - SmartStock</title>
-  <link rel="stylesheet" href="../css/login.css" />
+  <title data-i18n="login_page_title">Login - SmartStock</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <script src="../js/lang.js" defer></script>
+
   <style>
     * {
       box-sizing: border-box;
       font-family: 'Inter', sans-serif;
     }
-
     body {
       margin: 0;
       background-color: #f8f9fa;
@@ -21,7 +19,6 @@
       align-items: center;
       height: 100vh;
     }
-
     .login-container {
       display: flex;
       width: 90%;
@@ -30,29 +27,25 @@
       border-radius: 12px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
       overflow: hidden;
+      position: relative;
     }
-
     .form-section {
       flex: 1;
       padding: 40px;
     }
-
     .form-section h1 {
       font-size: 28px;
       margin-bottom: 10px;
       color: #1a1a1a;
     }
-
     .form-section .brand {
       color: #001f54;
     }
-
     .subtext {
       color: #555;
       font-size: 16px;
       margin-bottom: 30px;
     }
-
     .google-signin {
       display: flex;
       align-items: center;
@@ -66,11 +59,9 @@
       margin-bottom: 25px;
       transition: background 0.3s ease;
     }
-
     .google-signin:hover {
       background-color: #f0f0f0;
     }
-
     form label {
       display: block;
       margin-top: 15px;
@@ -78,7 +69,6 @@
       font-weight: 600;
       color: #333;
     }
-
     input[type="text"], input[type="password"] {
       width: 100%;
       padding: 10px;
@@ -87,12 +77,10 @@
       margin-bottom: 10px;
       transition: border-color 0.3s;
     }
-
     input:focus {
       border-color: #001f54;
       outline: none;
     }
-
     .form-footer {
       display: flex;
       justify-content: space-between;
@@ -100,7 +88,6 @@
       margin-top: 10px;
       font-size: 14px;
     }
-
     .login-btn {
       width: 100%;
       padding: 12px;
@@ -114,36 +101,29 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-
     .login-btn:hover {
       background-color: #003176;
     }
-
     .signup-text {
       margin-top: 20px;
       font-size: 14px;
     }
-
     .signup-text a {
       color: #001f54;
       text-decoration: none;
     }
-
     .signup-text a:hover {
       text-decoration: underline;
     }
-
     .image-section {
       flex: 1;
       display: none;
     }
-
     .image-section img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-
     @media (min-width: 768px) {
       .image-section {
         display: block;
@@ -154,34 +134,34 @@
 <body>
   <div class="login-container">
     <div class="form-section">
-      <h1><span data-i18n="welcome">Welcome to</span> <span class="brand" data-i18n="appName">SmartStock</span></h1>
+      <h1><span data-i18n="welcome">Welcome to</span> <span class="brand" data-i18n="app_name">SmartStock</span></h1>
       <p class="subtext" data-i18n="subtext">Manage your inventory easily across all your devices</p>
 
       <button class="google-signin" onclick="signInWithGoogle()">
         <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Icon" width="20" height="20" />
-        <span data-i18n="googleSignIn">Sign in with Google</span>
+        <span data-i18n="google_sign_in">Sign in with Google</span>
       </button>
 
       <form id="loginForm">
         <label for="username" data-i18n="username">Username or Email*</label>
-        <input type="text" id="username" data-i18n-placeholder="placeholder.username" placeholder="Enter your username or email" required />
+        <input type="text" id="username" data-i18n-placeholder="username" placeholder="Enter your username or email" required />
 
         <label for="password" data-i18n="password">Password*</label>
-        <input type="password" id="password" data-i18n-placeholder="placeholder.password" placeholder="Minimum 8 characters" minlength="8" required />
+        <input type="password" id="password" data-i18n-placeholder="password" placeholder="Minimum 8 characters" minlength="8" required />
 
         <div class="form-footer">
           <label class="remember-me">
-            <input type="checkbox" /> <span data-i18n="rememberMe">Remember me</span>
+            <input type="checkbox" /> <span data-i18n="remember_me">Remember me</span>
           </label>
-          <a href="#" data-i18n="forgotPassword">Forgot password?</a>
+          <a href="#" data-i18n="forgot_password">Forgot password?</a>
         </div>
 
         <button type="submit" class="login-btn" data-i18n="login">Login</button>
       </form>
 
       <p class="signup-text">
-        <span data-i18n="signupText">New to SmartStock?</span>
-        <a id="signup-link" data-i18n="signupHere" href="register.html">Sign up here</a>
+        <span data-i18n="signup_text">New to SmartStock?</span>
+        <a id="signup-link" data-i18n="signup_here" href="register.html">Sign up here</a>
       </p>
     </div>
 
@@ -191,6 +171,8 @@
   </div>
 
   <script>
+    const API_BASE = 'https://smartstock-1-1wm7.onrender.com';
+
     document.addEventListener("DOMContentLoaded", function () {
       const lang = new URLSearchParams(window.location.search).get('lang') || localStorage.getItem("selectedLang") || "en";
       localStorage.setItem("selectedLang", lang);
@@ -209,8 +191,12 @@
 
           document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
             const key = el.getAttribute("data-i18n-placeholder");
-            if (translations[key]) el.placeholder = translations[key];
+            if (translations[key]) el.setAttribute("placeholder", translations[key]);
           });
+
+          if (translations["login_page_title"]) {
+            document.title = translations["login_page_title"];
+          }
         });
     }
 
@@ -220,7 +206,7 @@
       const password = document.getElementById('password').value;
 
       try {
-        const res = await fetch('http://localhost:8000/api/token/', {
+        const res = await fetch(`${API_BASE}/api/token/`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, password })
@@ -250,11 +236,10 @@
     });
 
     function signInWithGoogle() {
-      const clientId = "170655378518-8ad1hbkokallahindl7ao5c5960b0f9e6.apps.googleusercontent.com";
-      const redirectUri = "http://127.0.0.1:5500/frontend/html/login.html";
+      const clientId = "YOUR_GOOGLE_CLIENT_ID";
+      const redirectUri = "https://smartstock-frontend.netlify.app/html/login.html";
       const scope = "openid profile email";
       const responseType = "token";
-
       const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
       window.location.href = oauthUrl;
     }
