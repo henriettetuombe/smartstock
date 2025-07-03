@@ -116,3 +116,26 @@ def create_admin_user(request):
         )
         return HttpResponse(" Superuser 'admin' created successfully.")
     return HttpResponse(" Superuser already exists.")
+
+# === One-time Category Seeder (Call /seed-categories/ after deploy) ===
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def seed_categories(request):
+    """
+    Seeds 25 default categories. Call once via /seed-categories/ then remove this.
+    """
+    default_categories = [
+        "Electronics", "Clothing", "Shoes", "Bakery", "Dairy",
+        "Frozen Foods", "Hygiene", "Beverages", "Toys", "Accessories",
+        "Books", "Stationery", "Pet Supplies", "Cleaning Supplies", "Beauty",
+        "Furniture", "Sports Equipment", "Gardening", "Automotive", "Baby Products",
+        "Office Supplies", "Health", "Groceries", "Music", "Games"
+    ]
+    created = []
+    for name in default_categories:
+        obj, was_created = Category.objects.get_or_create(name=name)
+        if was_created:
+            created.append(name)
+    if created:
+        return Response({"message": f"Categories added: {', '.join(created)}"})
+    return Response({"message": "All default categories already exist."})
