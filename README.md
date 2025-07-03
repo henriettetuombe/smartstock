@@ -1,12 +1,19 @@
 # SmartStock – Scalable Inventory Management Web App
 
-SmartStock is a multilingual, mobile-friendly inventory management system built to help individuals and small businesses easily track stock levels in real time. The app supports full CRUD operations, real-time low-stock alerts, and multiple language options (English, Kinyarwanda, French). It’s designed for both mobile and desktop users, providing a clean, responsive interface.
+SmartStock is a modern, multilingual, mobile-responsive inventory management system built to help individuals and small businesses track their stock in real time. The platform supports full CRUD operations, low stock alerts, user personalization, and dynamic language switching (English, French, Kinyarwanda). It is built with Django on the backend and plain HTML, CSS, and JavaScript on the frontend.
+
+## Live Deployment
+
+- Frontend: https://merry-dango-a5ec2a.netlify.app/html/landing.html
+- Backend: https://smartstock-1-1wm7.onrender.com
+
+Make sure the backend is running for frontend interactions (like item creation, language loading, or authentication).
 
 ## GitHub Repository
 
 https://github.com/henriettetuombe/smartstock
 
-## How to Set Up the Project
+## Project Setup Instructions
 
 ### 1. Clone the Repository
 
@@ -20,112 +27,162 @@ cd smartstock
 ```bash
 cd backend
 python -m venv env
-source env/bin/activate      # On Windows: env\Scripts\activate
+# Activate the virtual environment:
+# On Windows:
+env\Scripts\activate
+# On macOS/Linux:
+source env/bin/activate
+
+# Install dependencies
 pip install -r requirements.txt
+
+# Run migrations
 python manage.py migrate
+
+# (Optional) Create superuser
+python manage.py createsuperuser
+
+# Run the server
 python manage.py runserver
 ```
 
 ### 3. Frontend Setup
 
-If using plain HTML/JS:
-- Open `frontend/html/index.html` or `dashboard.html` in your browser.
-- Ensure the Django server is running for API-based features to function.
+No compilation or build steps needed.
+
+- Open `frontend/html/landing.html` or `dashboard.html` in a browser.
+- Make sure the backend is running and accessible for API features.
 
 ## Project Structure
 
 ```
 smartstock/
-├── backend/              # Django backend logic & API
-│   ├── inventory/        # Inventory app
-│   ├── smartstock/       # Django project config
-│   ├── static/           # Static files (JS, CSS, etc.)
-│   ├── db.sqlite3        # Development DB
-│   └── manage.py
+├── backend/
+│   ├── inventory/
+│   ├── smartstock/
+│   ├── static/
+│   └── db.sqlite3
 │
-├── frontend/             # HTML/CSS/JS frontend
-│   ├── html/             # Pages (dashboard, settings, etc.)
-│   ├── css/              # Stylesheets
-│   ├── js/               # Script logic
-│   ├── images/           # UI graphics/icons
-│   └── lang/             # JSON translation files
-│
-├── demo_video/           # Final project demo video
-├── Screenshots/          # Screenshots showing functionality
-├── .gitignore
+├── frontend/
+│   ├── html/
+│   ├── css/
+│   ├── js/
+│   ├── images/
+│   └── lang/
+├── Screenshots/
+├── demo_video/
+├── requirements.txt
 └── README.md
 ```
 
-## Key Features
+## Features
 
-- Inventory management (CRUD)
+- Add / Update / Delete inventory items
 - Low stock and out-of-stock notifications
-- Multilingual interface (EN, FR, RW)
-- Mobile-responsive layout
-- User preferences stored in local storage
-- Simple and clean user interface
+- Multilingual support: English, French, Kinyarwanda
+- User login/register with JWT auth
+- Dynamic language switching
+- Mobile and tablet responsive design
+- LocalStorage support for user preferences
+- Admin panel for backend management
+- Pre-seeded product categories
 
-## Backend Highlights
+## Authentication
 
-- Built with Django
-- Uses SQLite3 for local development
-- API-ready structure with support for CRUD
-- Static file support and authentication ready
+Authentication is handled using JWT (via djangorestframework-simplejwt).
+
+### Available Endpoints:
+
+```
+GET    /api/user/
+POST   /api/token/
+POST   /api/token/refresh/
+POST   /api/register/
+GET    /admin/
+```
+
+## Inventory API
+
+```
+GET    /api/items/
+POST   /api/items/
+PUT    /api/items/<id>/
+DELETE /api/items/<id>/
+GET    /api/categories/
+GET    /api/seed-categories/
+```
 
 ## Multilingual Support
 
-Languages supported:
-- English
-- French
-- Kinyarwanda
+Language files are stored in `frontend/lang/` and include:
 
-Language files are found in `frontend/lang/` and use JavaScript with `data-i18n` attributes to update content dynamically.
+- en.json
+- fr.json
+- rw.json
 
-## Demo Video
+Using `data-i18n` attributes and JavaScript, the language can be switched dynamically.
 
-Location: `/demo_video/demo.mp4`  
-Duration: 5 minutes
+## Testing & Quality Assurance
 
-Covers:
-- Dashboard overview
-- Add, update, delete item demo
-- Notifications and stock level indicators
-- Language switch and responsiveness
+| Test Area                    | Status         |
+|-----------------------------|----------------|
+| CRUD operations             | Functional     |
+| Category auto-loading       | Working        |
+| Multilingual switching      | Dynamic        |
+| Responsive UI               | Mobile/tablet verified |
+| LocalStorage (preferences)  | Functional     |
+| API Auth (JWT)              | Verified       |
+| Admin functionality         | Working        |
 
 ## Screenshots
 
-All screenshots are stored in `/Screenshots/`, showing:
-- Dashboard
-- Notifications
-- Forms (add/update/delete)
-- Mobile responsiveness
-- Language toggle in action
+Screenshots are stored in `/Screenshots/` and show:
 
-## Testing Strategies and Results
+- Landing page
+- Dashboard and item status
+- Add/Update/Delete pages
+- Mobile version UI
+- Language switcher in action
+- Admin panel categories
 
-- CRUD functionality tested with valid/invalid inputs
-- Mobile responsiveness tested on various screen sizes
-- Checked on Chrome, Edge, Firefox browsers
-- Storage of user preferences validated with LocalStorage
-- Stock threshold alerts confirmed working
+## Demo Video
 
-## Performance
+Location: `/demo_video/demo.mp4`
 
-| Feature                    | Result         |
-|---------------------------|----------------|
-| CRUD                      | Working         |
-| Notifications             | Triggered correctly |
-| Language Switching        | Dynamic          |
-| Mobile Responsiveness     | Confirmed        |
-| Settings Storage          | Functional       |
+Covers:
+
+- Register/login flow
+- Adding and editing stock items
+- Category loading
+- Real-time notifications
+- Language toggle across interface
+- Responsive layout demonstration
+
+## Deployment Plan
+
+### Backend (Render)
+
+- Platform: Render.com
+- Database: SQLite
+- Endpoint: https://smartstock-1-1wm7.onrender.com
+- Admin Creation: Temporary endpoint `/api/create-admin/` added for first-time setup
+
+### Frontend (Netlify)
+
+- Platform: Netlify
+- Build: Static HTML/CSS/JS
+- URL: https://merry-dango-a5ec2a.netlify.app/html/landing.html
 
 ## Tech Stack
 
-| Layer       | Technology         |
-|-------------|--------------------|
-| Frontend    | HTML, CSS, JavaScript |
-| Backend     | Django               |
-| Database    | SQLite3              |
+| Layer         | Tools/Technologies         |
+|---------------|----------------------------|
+| Frontend      | HTML, CSS, JavaScript      |
+| Backend       | Django, Django REST Framework |
+| Authentication| JWT (SimpleJWT)            |
+| Database      | SQLite3                    |
+| Deployment    | Render (backend), Netlify (frontend) |
+| i18n          | JSON with JavaScript       |
 
 ## Author
 
