@@ -6,6 +6,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.db.models import Q
+from django.http import HttpResponse
+from django.contrib.auth import get_user_model
 
 from .models import Category, Item
 from .serializers import (
@@ -96,3 +98,21 @@ def register_user(request):
         }, status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# === Temporary Admin Creation View (for Render deployment) ===
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def create_admin_user(request):
+    """
+    Temporary view to create a superuser on Render where shell access isn't available.
+    Visit /create-admin/ ONCE after deploy, then delete this view from production.
+    """
+    User = get_user_model()
+    if not User.objects.filter(username='admin').exists():
+        User.objects.create_superuser(
+            username='admin',
+            email='admin@gmail.com',
+            password='AdminPassword123'  #  Change to something strong
+        )
+        return HttpResponse(" Superuser 'admin' created successfully.")
+    return HttpResponse(" Superuser already exists.")

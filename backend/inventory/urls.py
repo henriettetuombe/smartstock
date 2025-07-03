@@ -5,7 +5,8 @@ from .views import (
     CategoryViewSet,
     current_user_view,
     get_auth_token,
-    register_user
+    register_user,
+    create_admin_user  # ✅ Import the new admin creation view
 )
 
 # === Register viewsets ===
@@ -19,4 +20,5 @@ urlpatterns = [
     path('user/', current_user_view, name='user-info'),  # GET: /api/user/
     path('token/', get_auth_token, name='get-token'),    # POST: /api/token/
     path('register/', register_user, name='register'),   # POST: /api/register/
+    path('create-admin/', create_admin_user),            # ✅ TEMP: /api/create-admin/
 ]
