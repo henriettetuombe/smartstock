@@ -1,3 +1,4 @@
+
 # SmartStock – Scalable Inventory Management Web App
 
 SmartStock is a modern, multilingual, mobile-responsive inventory management system built to help individuals and small businesses track their stock in real time. The platform supports full CRUD operations, low stock alerts, user personalization, and dynamic language switching (English, French, Kinyarwanda). It is built with Django on the backend and plain HTML, CSS, and JavaScript on the frontend.
