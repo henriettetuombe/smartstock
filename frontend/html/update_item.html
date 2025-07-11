@@ -292,9 +292,9 @@
           <td><input type="number" value="${item.quantity}" min="0" /></td>
           <td>
             <select>
-              <option value="in_stock" ${item.status === 'in_stock' ? 'selected' : ''}>In Stock</option>
-              <option value="running_low" ${item.status === 'running_low' ? 'selected' : ''}>Running Low</option>
-              <option value="out_of_stock" ${item.status === 'out_of_stock' ? 'selected' : ''}>Out of Stock</option>
+              <option value="In Stock" ${item.status === 'In Stock' ? 'selected' : ''}>In Stock</option>
+              <option value="Running Low" ${item.status === 'Running Low' ? 'selected' : ''}>Running Low</option>
+              <option value="Out of Stock" ${item.status === 'Out of Stock' ? 'selected' : ''}>Out of Stock</option>
             </select>
           </td>`;
         tbody.appendChild(tr);
@@ -313,10 +313,12 @@
       const name = row.cells[1].textContent.trim();
       const date = row.cells[2].querySelector('input').value;
       const category = parseInt(row.cells[3].querySelector('select').value);
-      const quantity = row.cells[4].querySelector('input').value;
+      const quantity = parseInt(row.cells[4].querySelector('input').value);
       const status = row.cells[5].querySelector('select').value;
 
-      await fetch(`${API_BASE}/api/items/${id}/`, {
+      console.log("Updating item", { id, name, date, category, quantity, status });
+
+      const response = await fetch(`${API_BASE}/api/items/${id}/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -324,6 +326,12 @@
         },
         body: JSON.stringify({ name, date_added: date, category_id: category, quantity, status })
       });
+
+      if (!response.ok) {
+        const error = await response.json();
+        console.error("Update failed:", error);
+        alert("Update failed: " + JSON.stringify(error));
+      }
     }
     alert("Changes saved!");
     loadItems();
@@ -349,7 +357,7 @@
           const key = el.getAttribute("data-i18n-placeholder");
           if (data[key]) el.placeholder = data[key];
         });
-        feather.replace(); // re-render icons
+        feather.replace();
       });
   }
 

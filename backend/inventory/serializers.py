@@ -27,15 +27,13 @@ class ItemSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['owner'] = self.context['request'].user
         item = super().create(validated_data)
-        item.update_status()
+        item.update_status()  # ✅ only update status on create
         item.save()
         return item
 
     def update(self, instance, validated_data):
-        item = super().update(instance, validated_data)
-        item.update_status()
-        item.save()
-        return item
+        # ✅ no update_status() here to prevent overriding user input
+        return super().update(instance, validated_data)
 
 # === UserProfile Serializer ===
 class UserProfileSerializer(serializers.ModelSerializer):
