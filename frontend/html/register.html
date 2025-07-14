@@ -41,8 +41,7 @@
       margin-bottom: 15px;
       flex-wrap: wrap;
     }
-    .form-group > div,
-    .full-width {
+    .form-group > div, .full-width {
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -111,9 +110,7 @@
       margin-left: 10px;
       animation: spin 0.8s linear infinite;
     }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
     .login-text {
       margin-top: 20px;
       font-size: 14px;
@@ -126,6 +123,19 @@
     .login-text a:hover {
       text-decoration: underline;
     }
+    #successToast {
+      display: none;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #4BB543;
+      color: white;
+      padding: 14px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
     @media (max-width: 600px) {
       .form-group {
         flex-direction: column;
@@ -137,30 +147,34 @@
 <body>
   <div class="register-container">
     <div class="form-section">
-      <h1><span data-i18n="create_account">Create your</span> <span class="brand" data-i18n="app_name">SmartStock</span> <span data-i18n="account">Account</span></h1>
+      <h1>
+        <span data-i18n="create_account">Create your</span>
+        <span class="brand" data-i18n="app_name"></span>
+        <span data-i18n="account">Account</span>
+      </h1>
       <p class="subtext" data-i18n="start_managing">Start managing your stock in seconds</p>
       <form id="registerForm" novalidate>
         <div class="form-group">
           <div>
             <label for="firstName" data-i18n="first_name">First Name</label>
-            <input type="text" id="firstName" name="first_name" required data-i18n-placeholder="first_name_placeholder" placeholder="Enter first name" />
+            <input type="text" id="firstName" name="first_name" required placeholder="Enter first name" />
             <small class="error" id="firstNameError"></small>
           </div>
           <div>
             <label for="lastName" data-i18n="last_name">Last Name</label>
-            <input type="text" id="lastName" name="last_name" required data-i18n-placeholder="last_name_placeholder" placeholder="Enter last name" />
+            <input type="text" id="lastName" name="last_name" required placeholder="Enter last name" />
             <small class="error" id="lastNameError"></small>
           </div>
         </div>
         <div class="form-group">
           <div>
             <label for="email" data-i18n="email">Email Address</label>
-            <input type="email" id="email" name="email" required data-i18n-placeholder="email_placeholder" placeholder="Enter email" />
+            <input type="email" id="email" name="email" required placeholder="Enter your email address" />
             <small class="error" id="emailError"></small>
           </div>
           <div>
             <label for="phone" data-i18n="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone_number" required pattern="[0-9]{10,}" data-i18n-placeholder="phone_placeholder" placeholder="Enter phone number" />
+            <input type="tel" id="phone" name="phone_number" required pattern="[0-9]{10,}" placeholder="Enter your phone number" />
             <small class="error" id="phoneError"></small>
           </div>
         </div>
@@ -175,13 +189,13 @@
         </div>
         <div class="full-width">
           <label for="password" data-i18n="password">Password</label>
-          <input type="password" id="password" name="password" minlength="8" required data-i18n-placeholder="password_placeholder" placeholder="Minimum 8 characters" />
+          <input type="password" id="password" name="password" minlength="8" required placeholder="Minimum 8 characters" />
           <small class="error" id="passwordError"></small>
           <div id="password-strength"></div>
         </div>
         <div class="full-width">
           <label for="confirmPassword" data-i18n="confirm_password">Confirm Password</label>
-          <input type="password" id="confirmPassword" name="confirm_password" required data-i18n-placeholder="confirm_password_placeholder" placeholder="Re-type password" />
+          <input type="password" id="confirmPassword" name="confirm_password" required placeholder="Re-type password" />
           <small class="error" id="confirmPasswordError"></small>
         </div>
         <div class="password-toggle">
@@ -209,120 +223,125 @@
     </div>
   </div>
 
-<script>
-  const API_BASE = 'https://smartstock-1-1wm7.onrender.com';
+  <div id="successToast"> Registration successful! Redirecting...</div>
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const lang = new URLSearchParams(window.location.search).get("lang") || localStorage.getItem("selectedLang") || "en";
-    localStorage.setItem("selectedLang", lang);
-    loadTranslations(lang);
-    const loginLink = document.getElementById("login-link");
-    if (loginLink) loginLink.href = `login.html?lang=${lang}`;
-  });
+  <script>
+    const API_BASE = 'https://smartstock-1-1wm7.onrender.com';
 
-  function loadTranslations(lang) {
-    fetch(`../lang/${lang}.json`)
-      .then(res => res.json())
-      .then(translations => {
-        document.querySelectorAll("[data-i18n]").forEach(el => {
-          const key = el.getAttribute("data-i18n");
-          if (translations[key]) el.innerHTML = translations[key];
+    document.addEventListener("DOMContentLoaded", () => {
+      const lang = new URLSearchParams(window.location.search).get("lang") || localStorage.getItem("selectedLang") || "en";
+      localStorage.setItem("selectedLang", lang);
+      loadTranslations(lang);
+      const loginLink = document.getElementById("login-link");
+      if (loginLink) loginLink.href = `login.html?lang=${lang}`;
+    });
+
+    function loadTranslations(lang) {
+      fetch(`../lang/${lang}.json`)
+        .then(res => res.json())
+        .then(translations => {
+          document.querySelectorAll("[data-i18n]").forEach(el => {
+            const key = el.getAttribute("data-i18n");
+            if (translations[key]) el.innerHTML = translations[key];
+          });
+
+          document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+            const key = el.getAttribute("data-i18n-placeholder");
+            if (translations[key]) el.placeholder = translations[key];
+          });
+
+          document.querySelectorAll("option[data-i18n]").forEach(option => {
+            const key = option.getAttribute("data-i18n");
+            if (translations[key]) option.textContent = translations[key];
+          });
+
+          if (translations["register_page_title"]) {
+            document.title = translations["register_page_title"];
+          }
         });
-
-        document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
-          const key = el.getAttribute("data-i18n-placeholder");
-          if (translations[key]) el.placeholder = translations[key];
-        });
-
-        document.querySelectorAll("option[data-i18n]").forEach(option => {
-          const key = option.getAttribute("data-i18n");
-          if (translations[key]) option.textContent = translations[key];
-        });
-
-        if (translations["register_page_title"]) {
-          document.title = translations["register_page_title"];
-        }
-      });
-  }
-
-  document.getElementById('togglePassword').addEventListener('change', function () {
-    const type = this.checked ? 'text' : 'password';
-    document.getElementById('password').type = type;
-    document.getElementById('confirmPassword').type = type;
-  });
-
-  document.getElementById('password').addEventListener('input', function () {
-    const strength = document.getElementById('password-strength');
-    const val = this.value;
-    if (val.length < 8) {
-      strength.textContent = 'Weak';
-      strength.style.color = '#d32f2f';
-    } else if (val.length < 12) {
-      strength.textContent = 'Moderate';
-      strength.style.color = '#fbc02d';
-    } else {
-      strength.textContent = 'Strong';
-      strength.style.color = '#388e3c';
     }
-  });
 
-  document.getElementById('registerForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const firstName = document.getElementById('firstName').value.trim();
-    const lastName = document.getElementById('lastName').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const accountType = document.getElementById('accountType').value;
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-    const agreed = document.getElementById('terms').checked;
+    document.getElementById('togglePassword').addEventListener('change', function () {
+      const type = this.checked ? 'text' : 'password';
+      document.getElementById('password').type = type;
+      document.getElementById('confirmPassword').type = type;
+    });
 
-    let hasError = false;
-    const clearErrors = () => {
-      ['firstName', 'lastName', 'email', 'phone', 'password', 'confirmPassword', 'accountType'].forEach(id => {
-        const el = document.getElementById(id + 'Error');
-        if (el) el.textContent = '';
-      });
-    };
-    clearErrors();
-
-    if (!firstName) { document.getElementById('firstNameError').textContent = 'First name is required.'; hasError = true; }
-    if (!lastName) { document.getElementById('lastNameError').textContent = 'Last name is required.'; hasError = true; }
-    if (!email) { document.getElementById('emailError').textContent = 'Email is required.'; hasError = true; }
-    if (!phone.match(/^\d{10,}$/)) { document.getElementById('phoneError').textContent = 'Phone must be at least 10 digits.'; hasError = true; }
-    if (!accountType || accountType === 'Select account type') { document.getElementById('accountTypeError').textContent = 'Please select an account type.'; hasError = true; }
-    if (password.length < 8) { document.getElementById('passwordError').textContent = 'Password must be at least 8 characters.'; hasError = true; }
-    if (password !== confirmPassword) { document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.'; hasError = true; }
-    if (!agreed) { alert('You must agree to the terms.'); hasError = true; }
-    if (hasError) return;
-
-    const btnText = document.querySelector(".btn-text");
-    const loader = document.querySelector(".loader");
-    btnText.style.display = 'none'; loader.style.display = 'inline-block';
-
-    try {
-      const res = await fetch(`${API_BASE}/api/register/`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: email, first_name: firstName, last_name: lastName, email, phone_number: phone, account_type: accountType, password, confirm_password: confirmPassword })
-      });
-
-      if (res.ok) {
-        alert('Registration successful! Redirecting to login...');
-        window.location.href = `login.html?lang=${localStorage.getItem('selectedLang') || 'en'}`;
+    document.getElementById('password').addEventListener('input', function () {
+      const strength = document.getElementById('password-strength');
+      const val = this.value;
+      if (val.length < 8) {
+        strength.textContent = 'Weak';
+        strength.style.color = '#d32f2f';
+      } else if (val.length < 12) {
+        strength.textContent = 'Moderate';
+        strength.style.color = '#fbc02d';
       } else {
-        const data = await res.json();
-        const errorMessages = Object.entries(data).map(([field, messages]) => `${field}: ${messages.join(', ')}`).join('\n');
-        alert('Registration failed:\n' + errorMessages);
+        strength.textContent = 'Strong';
+        strength.style.color = '#388e3c';
       }
-    } catch (err) {
-      console.error(err);
-      alert('Something went wrong. Please try again later.');
-    } finally {
-      loader.style.display = 'none';
-      btnText.style.display = 'inline-block';
-    }
-  });
-</script>
+    });
+
+    document.getElementById('registerForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const accountType = document.getElementById('accountType').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const agreed = document.getElementById('terms').checked;
+
+      let hasError = false;
+      const clearErrors = () => {
+        ['firstName', 'lastName', 'email', 'phone', 'password', 'confirmPassword', 'accountType'].forEach(id => {
+          const el = document.getElementById(id + 'Error');
+          if (el) el.textContent = '';
+        });
+      };
+      clearErrors();
+
+      if (!firstName) { document.getElementById('firstNameError').textContent = 'First name is required.'; hasError = true; }
+      if (!lastName) { document.getElementById('lastNameError').textContent = 'Last name is required.'; hasError = true; }
+      if (!email) { document.getElementById('emailError').textContent = 'Email is required.'; hasError = true; }
+      if (!phone.match(/^\d{10,}$/)) { document.getElementById('phoneError').textContent = 'Phone must be at least 10 digits.'; hasError = true; }
+      if (!accountType || accountType === 'Select account type') { document.getElementById('accountTypeError').textContent = 'Please select an account type.'; hasError = true; }
+      if (password.length < 8) { document.getElementById('passwordError').textContent = 'Password must be at least 8 characters.'; hasError = true; }
+      if (password !== confirmPassword) { document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.'; hasError = true; }
+      if (!agreed) { alert('You must agree to the terms.'); hasError = true; }
+      if (hasError) return;
+
+      const btnText = document.querySelector(".btn-text");
+      const loader = document.querySelector(".loader");
+      btnText.style.display = 'none'; loader.style.display = 'inline-block';
+
+      try {
+        const res = await fetch(`${API_BASE}/api/register/`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: email, first_name: firstName, last_name: lastName, email, phone_number: phone, account_type: accountType, password, confirm_password: confirmPassword })
+        });
+
+        if (res.ok) {
+          document.getElementById("successToast").style.display = "block";
+          setTimeout(() => {
+            document.getElementById("successToast").style.display = "none";
+            window.location.href = `login.html?lang=${localStorage.getItem('selectedLang') || 'en'}`;
+          }, 2000);
+        } else {
+          const data = await res.json();
+          const errorMessages = Object.entries(data).map(([field, messages]) => `${field}: ${messages.join(', ')}`).join('\n');
+          alert('Registration failed:\n' + errorMessages);
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Something went wrong. Please try again later.');
+      } finally {
+        loader.style.display = 'none';
+        btnText.style.display = 'inline-block';
+      }
+    });
+  </script>
 </body>
 </html>

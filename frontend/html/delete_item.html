@@ -4,20 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title data-i18n="delete_item_title">Delete Item – SmartStock</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/feather-icons"></script>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Inter', sans-serif;
       background: #f4f6f9;
       color: #333;
     }
-    .dashboard {
-      display: flex;
-      min-height: 100vh;
-      flex-direction: row;
-    }
+    .dashboard { display: flex; min-height: 100vh; }
     .sidebar {
       width: 250px;
       background: #0f1e34;
@@ -43,14 +39,8 @@
       margin-bottom: 0.5rem;
       transition: background 0.2s;
     }
-    .sidebar nav a:hover, .sidebar nav a.active {
-      background: #1e2e4a;
-    }
-    main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
+    .sidebar nav a:hover, .sidebar nav a.active { background: #1e2e4a; }
+    main { flex: 1; display: flex; flex-direction: column; }
     .top-bar {
       display: flex;
       justify-content: space-between;
@@ -58,14 +48,11 @@
       background: #fff;
       padding: 1rem 2rem;
       border-bottom: 1px solid #ddd;
-      flex-wrap: wrap;
-      gap: 1rem;
     }
     .profile-box {
       display: flex;
       align-items: center;
       gap: 1rem;
-      flex-wrap: wrap;
     }
     .search-input {
       padding: 0.5rem 1rem;
@@ -127,9 +114,7 @@
     }
     #langDropdown li:hover { background: #f0f0f0; }
     .hidden { display: none; }
-    .content {
-      padding: 2rem 3rem;
-    }
+    .content { padding: 2rem 3rem; }
     .section-title {
       font-size: 1.5rem;
       margin-bottom: 1rem;
@@ -147,10 +132,57 @@
       text-align: left;
       border-bottom: 1px solid #eee;
     }
-    th {
-      background: #f9fafc;
+    th { background: #f9fafc; }
+    .dashboard-footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.875rem;
+      color: #777;
     }
-    .delete-confirm {
+    .delete-bar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-top: 18px;
+      gap: 12px;
+    }
+    .delete-btn, .cancel-btn {
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .delete-btn {
+      background: #e74c3c;
+      color: #fff;
+    }
+    .delete-btn[disabled] { opacity: 0.7; cursor: not-allowed; }
+    .cancel-btn {
+      background: #6c757d;
+      color: #fff;
+    }
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: #28a745;
+      color: white;
+      padding: 14px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      opacity: 0;
+      z-index: 10000;
+      transition: opacity 0.5s ease-in-out;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; pointer-events: auto; }
+    .delete-confirm-bar {
       margin-top: 1.5rem;
       padding: 1rem;
       background: #fff3f3;
@@ -159,69 +191,35 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
       gap: 1rem;
-    }
-    .delete-confirm .buttons button {
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .btn-green {
-      background: #28a745;
-      color: white;
-    }
-    .btn-gray {
-      background: #6c757d;
-      color: white;
-    }
-    .dashboard-footer {
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.875rem;
-      color: #777;
+      font-weight: 500;
+      color: #a94442;
+      font-size: 1rem;
+      transition: background 0.2s;
     }
     @media (max-width: 768px) {
-      .dashboard {
-        flex-direction: column;
-      }
-      .sidebar {
-        width: 100%;
-        padding: 1rem;
-        text-align: center;
-      }
-      .top-bar {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .content {
-        padding: 1rem;
-      }
-      table, th, td {
-        font-size: 0.85rem;
-        word-break: break-word;
-      }
+      .dashboard { flex-direction: column; }
+      .sidebar { width: 100%; padding: 1rem; text-align: center; }
+      .top-bar { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .content { padding: 1rem; }
+      .delete-bar { flex-direction: column; align-items: stretch; gap: 10px; }
     }
   </style>
 </head>
 <body>
   <div class="dashboard">
-    <!-- Sidebar -->
     <aside class="sidebar">
       <div class="logo"><i data-feather="box"></i><span>SmartStock</span></div>
       <nav>
         <a href="dashboard.html"><i data-feather="home"></i><span data-i18n="dashboard">Dashboard</span></a>
         <a href="add_item.html"><i data-feather="plus-circle"></i><span data-i18n="add_item">Add Item</span></a>
         <a href="update_item.html"><i data-feather="edit-3"></i><span data-i18n="update_item">Update Item</span></a>
-        <a class="active" href="delete_item.html"><i data-feather="trash-2"></i><span data-i18n="delete_item">Delete Item</span></a>
+        <a class="active" href="#"><i data-feather="trash-2"></i><span data-i18n="delete_item">Delete Item</span></a>
         <a href="settings.html"><i data-feather="settings"></i><span data-i18n="settings">Settings</span></a>
         <a href="#" onclick="logout()"><i data-feather="log-out"></i><span data-i18n="logout">Log Out</span></a>
       </nav>
     </aside>
 
-    <!-- Main Content -->
     <main>
       <header class="top-bar">
         <div>
@@ -229,7 +227,7 @@
           <p class="subtitle" data-i18n="delete_item_subtitle">Manage your inventory safely</p>
         </div>
         <div class="profile-box">
-          <input type="text" class="search-input" data-i18n-placeholder="search_placeholder"/>
+          <input type="text" id="searchInput" class="search-input" data-i18n-placeholder="search_placeholder" />
           <div class="profile">
             <div class="language-container">
               <button id="langButton"><i data-feather="globe"></i><span id="currentLang">English</span></button>
@@ -262,11 +260,18 @@
             <tr><td colspan="6" data-i18n="no_data">Loading items...</td></tr>
           </tbody>
         </table>
-        <div class="delete-confirm">
-          <p data-i18n="delete_confirm">Are you sure you want to delete <span id="selectedCount">selected item(s)</span>?</p>
-          <div class="buttons">
-            <button id="confirmDelete" class="btn-green" data-i18n="yes">Yes</button>
-            <button id="cancelDelete" class="btn-gray" data-i18n="no">No</button>
+        <div class="delete-bar">
+          <button id="deleteBtn" class="delete-btn" disabled>
+            <i data-feather="trash-2"></i>
+            <span data-i18n="delete_selected">Delete Selected</span>
+          </button>
+          <button id="cancelBtn" class="cancel-btn" type="button" style="display:none" data-i18n="cancel">Cancel</button>
+        </div>
+        <div id="deleteConfirmBar" class="delete-confirm-bar" style="display:none">
+          <span id="confirmMsg" data-i18n="delete_confirm">Are you sure you want to delete selected item(s)?</span>
+          <div>
+            <button id="confirmYes" class="delete-btn" type="button" data-i18n="yes">Yes</button>
+            <button id="confirmNo" class="cancel-btn" type="button" data-i18n="no">No</button>
           </div>
         </div>
       </section>
@@ -274,37 +279,70 @@
       <footer class="dashboard-footer" data-i18n="footer_text">© 2025 SmartStock. Built by Henriette for individuals and businesses.</footer>
     </main>
   </div>
-
-  <!-- JavaScript -->
+  <div id="toast" class="toast"></div>
   <script>
     feather.replace();
     const API_BASE = "https://smartstock-1-1wm7.onrender.com";
-    const token = localStorage.getItem('access_token');
-    if (!token) logout();
+    let token = null;
+    let translations = {};
 
     function logout() {
       localStorage.removeItem('access_token');
       window.location.href = 'login.html';
     }
 
+    function showToast(message, isError = false) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.style.background = isError ? "#e74c3c" : "#28a745";
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2700);
+    }
+
+    async function checkToken() {
+      token = localStorage.getItem('access_token');
+      if (!token) {
+        logout();
+        throw new Error("No token found");
+      }
+    }
+
     async function fetchUserInfo() {
       try {
-        const res = await fetch(`${API_BASE}/api/user/`, { headers: { 'Authorization': `Bearer ${token}` } });
+        const res = await fetch(`${API_BASE}/api/user/`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) throw new Error('Unauthorized');
         const user = await res.json();
-        const name = user.first_name || user.username || 'User';
+        const name = user.first_name?.trim() || user.username || 'User';
         document.getElementById('profileInitial').textContent = name.charAt(0).toUpperCase();
         document.getElementById('profileName').textContent = name;
         document.getElementById('welcomeText').textContent = `${translations?.welcome || 'Welcome back'}, ${name}`;
-      } catch { logout(); }
+      } catch (err) {
+        logout();
+      }
     }
 
-    async function loadItems() {
+    async function loadItems(filter = '') {
       const tbody = document.getElementById('itemTableBody');
-      tbody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
       try {
-        const res = await fetch(`${API_BASE}/api/items/`, { headers: { 'Authorization': `Bearer ${token}` } });
-        const items = await res.json();
+        const res = await fetch(`${API_BASE}/api/items/`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        let items = await res.json();
+        // Filter if needed
+        if (filter) {
+          const lower = filter.toLowerCase();
+          items = items.filter(i =>
+            (i.name || '').toLowerCase().includes(lower)
+            || (i.category?.name || i.category || '').toLowerCase().includes(lower)
+          );
+        }
         tbody.innerHTML = '';
+        if (!items.length) {
+          tbody.innerHTML = `<tr><td colspan="6">${translations?.no_data || "No items found."}</td></tr>`;
+          return;
+        }
         items.forEach(item => {
           const tr = document.createElement('tr');
           tr.dataset.id = item.id;
@@ -323,85 +361,128 @@
       }
     }
 
-    document.getElementById('selectAll').addEventListener('change', function () {
-      document.querySelectorAll('.selectRow').forEach(cb => cb.checked = this.checked);
-    });
+    function getSelectedRows() {
+      return Array.from(document.querySelectorAll('.selectRow:checked'));
+    }
 
-    document.getElementById('itemTableBody').addEventListener('change', () => {
-      const checked = document.querySelectorAll('.selectRow:checked');
-      const names = Array.from(checked).map(cb => cb.closest('tr').querySelector('td:nth-child(2)').textContent);
-      document.getElementById('selectedCount').textContent = names.length ? names.join(', ') : 'selected item(s)';
-    });
+    function updateDeleteButtonState() {
+      document.getElementById('deleteBtn').disabled = getSelectedRows().length === 0;
+    }
 
-    document.getElementById('confirmDelete').addEventListener('click', async () => {
-      const selected = Array.from(document.querySelectorAll('.selectRow:checked'));
-      if (selected.length === 0) return alert("Please select items to delete.");
-      if (!confirm("Are you sure you want to delete the selected item(s)?")) return;
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        await checkToken();
+        await fetchUserInfo();
+        await loadItems();
 
-      for (let cb of selected) {
-        const id = cb.closest('tr').dataset.id;
-        const res = await fetch(`${API_BASE}/api/items/${id}/`, {
-          method: 'DELETE',
-          headers: { 'Authorization': `Bearer ${token}` }
+        // Enable/disable delete button based on selection
+        document.getElementById('itemTableBody').addEventListener('change', updateDeleteButtonState);
+        document.getElementById('selectAll').addEventListener('change', function () {
+          document.querySelectorAll('.selectRow').forEach(cb => cb.checked = this.checked);
+          updateDeleteButtonState();
         });
-        if (!res.ok) alert(`Failed to delete item with ID ${id}`);
-      }
-      alert("Selected items deleted successfully.");
-      loadItems();
-    });
 
-    document.getElementById('cancelDelete').addEventListener('click', () => {
-      document.querySelectorAll('.selectRow').forEach(cb => cb.checked = false);
-      document.getElementById('selectAll').checked = false;
-      document.getElementById('selectedCount').textContent = 'selected item(s)';
-    });
+        // Search filter (optional)
+        document.getElementById('searchInput').addEventListener('input', function () {
+          loadItems(this.value);
+        });
 
-    const langButton = document.getElementById("langButton");
-    const langDropdown = document.getElementById("langDropdown");
-    const currentLangSpan = document.getElementById("currentLang");
-    let translations = {};
+        // Delete button click
+        document.getElementById('deleteBtn').addEventListener('click', () => {
+          if (getSelectedRows().length === 0) {
+            showToast(translations?.please_select_delete || "Please select items to delete.", true);
+            return;
+          }
+          document.getElementById('deleteConfirmBar').style.display = "flex";
+          document.getElementById('deleteBtn').style.display = "none";
+          document.getElementById('cancelBtn').style.display = "inline-block";
+        });
 
-    langButton.addEventListener("click", () => langDropdown.classList.toggle("hidden"));
-    document.addEventListener("click", (e) => {
-      if (!langButton.contains(e.target) && !langDropdown.contains(e.target)) {
-        langDropdown.classList.add("hidden");
+        document.getElementById('cancelBtn').addEventListener('click', () => {
+          document.getElementById('deleteConfirmBar').style.display = "none";
+          document.getElementById('deleteBtn').style.display = "inline-flex";
+          document.getElementById('cancelBtn').style.display = "none";
+        });
+
+        document.getElementById('confirmNo').addEventListener('click', () => {
+          document.getElementById('deleteConfirmBar').style.display = "none";
+          document.getElementById('deleteBtn').style.display = "inline-flex";
+          document.getElementById('cancelBtn').style.display = "none";
+        });
+
+        document.getElementById('confirmYes').addEventListener('click', async () => {
+          const selected = getSelectedRows();
+          if (!selected.length) {
+            showToast(translations?.please_select_delete || "Please select items to delete.", true);
+            return;
+          }
+          let error = false;
+          for (let cb of selected) {
+            const id = cb.closest('tr').dataset.id;
+            const res = await fetch(`${API_BASE}/api/items/${id}/`, {
+              method: 'DELETE',
+              headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (!res.ok) error = true;
+          }
+          if (error) showToast(translations?.delete_failed || "Some items could not be deleted.", true);
+          else showToast(translations?.delete_success || "Selected items deleted successfully.");
+          document.getElementById('deleteConfirmBar').style.display = "none";
+          document.getElementById('deleteBtn').style.display = "inline-flex";
+          document.getElementById('cancelBtn').style.display = "none";
+          document.getElementById('selectAll').checked = false;
+          await loadItems();
+          updateDeleteButtonState();
+        });
+
+        // Lang switcher logic
+        const langButton = document.getElementById("langButton");
+        const langDropdown = document.getElementById("langDropdown");
+        langButton.addEventListener("click", () => langDropdown.classList.toggle("hidden"));
+        document.addEventListener("click", (e) => {
+          if (!langButton.contains(e.target) && !langDropdown.contains(e.target)) {
+            langDropdown.classList.add("hidden");
+          }
+        });
+        document.querySelectorAll("#langDropdown li").forEach(item => {
+          item.addEventListener("click", () => {
+            const lang = item.getAttribute("data-lang");
+            localStorage.setItem("selectedLang", lang);
+            updateCurrentLang(lang);
+            loadTranslations(lang);
+            langDropdown.classList.add("hidden");
+          });
+        });
+        const savedLang = localStorage.getItem("selectedLang") || "en";
+        updateCurrentLang(savedLang);
+        loadTranslations(savedLang);
+
+      } catch (err) {
+        // If not logged in or no token, logout
+        logout();
       }
     });
 
     function loadTranslations(lang) {
-      fetch(`../lang/${lang}.json`).then(res => res.json()).then(data => {
-        translations = data;
-        document.querySelectorAll("[data-i18n]").forEach(el => {
-          const key = el.getAttribute("data-i18n");
-          if (data[key]) el.textContent = data[key];
+      fetch(`../lang/${lang}.json`)
+        .then(res => res.json())
+        .then(data => {
+          translations = data;
+          document.querySelectorAll("[data-i18n]").forEach(el => {
+            const key = el.getAttribute("data-i18n");
+            if (data[key]) el.textContent = data[key];
+          });
+          document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+            const key = el.getAttribute("data-i18n-placeholder");
+            if (data[key]) el.placeholder = data[key];
+          });
         });
-        document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
-          const key = el.getAttribute("data-i18n-placeholder");
-          if (data[key]) el.placeholder = data[key];
-        });
-      });
     }
 
     function updateCurrentLang(lang) {
       const labelMap = { en: "English", rw: "Kinyarwanda", fr: "Français" };
-      currentLangSpan.textContent = labelMap[lang] || "English";
+      document.getElementById("currentLang").textContent = labelMap[lang] || "English";
     }
-
-    document.querySelectorAll("#langDropdown li").forEach(item => {
-      item.addEventListener("click", () => {
-        const lang = item.getAttribute("data-lang");
-        localStorage.setItem("selectedLang", lang);
-        updateCurrentLang(lang);
-        loadTranslations(lang);
-        langDropdown.classList.add("hidden");
-      });
-    });
-
-    const savedLang = localStorage.getItem("selectedLang") || "en";
-    updateCurrentLang(savedLang);
-    loadTranslations(savedLang);
-    fetchUserInfo();
-    loadItems();
   </script>
 </body>
 </html>

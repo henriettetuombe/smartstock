@@ -166,12 +166,28 @@
       border-bottom: 1px solid #eee;
     }
     th { background: #f9fafc; }
-
     .dashboard-footer {
       text-align: center;
       padding: 2rem;
       font-size: 0.875rem;
       color: #777;
+    }
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: #28a745;
+      color: white;
+      padding: 14px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      opacity: 0;
+      z-index: 10000;
+      transition: opacity 0.5s ease-in-out;
+    }
+    .toast.show {
+      opacity: 1;
     }
     @media (max-width: 768px) {
       .dashboard { flex-direction: column; }
@@ -259,6 +275,9 @@
     </main>
   </div>
 
+  <!-- ✅ Toast container -->
+  <div id="toast" class="toast">Item added successfully!</div>
+
   <script>
     feather.replace();
     const API_BASE = "https://smartstock-1-1wm7.onrender.com";
@@ -268,6 +287,13 @@
     function logout() {
       localStorage.removeItem('access_token');
       window.location.href = 'login.html';
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3000);
     }
 
     async function checkToken() {
@@ -300,17 +326,7 @@
         const res = await fetch(`${API_BASE}/api/categories/`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
-        if (!res.ok) throw new Error("Category fetch failed");
         const categories = await res.json();
-
-        if (!categories.length) {
-          const opt = document.createElement('option');
-          opt.textContent = "No categories found";
-          opt.disabled = true;
-          select.appendChild(opt);
-          return;
-        }
-
         categories.forEach(cat => {
           const opt = document.createElement('option');
           opt.value = cat.id;
@@ -318,11 +334,7 @@
           select.appendChild(opt);
         });
       } catch (err) {
-        console.error("Failed to load categories:", err);
-        const opt = document.createElement('option');
-        opt.textContent = "Error loading categories";
-        opt.disabled = true;
-        select.appendChild(opt);
+        showToast('Error loading categories');
       }
     }
 
@@ -346,7 +358,7 @@
           tbody.appendChild(tr);
         });
       } catch (err) {
-        console.error("Failed to load items:", err);
+        showToast('Error loading items');
       }
     }
 
@@ -387,7 +399,7 @@
           const status = document.getElementById('itemStatus').value;
 
           if (isNaN(categoryId)) {
-            alert('Please select a valid category.');
+            showToast('Please select a valid category.');
             return;
           }
 
@@ -402,15 +414,15 @@
             });
 
             if (res.ok) {
-              alert('Item added successfully!');
+              showToast('Item added successfully!');
               this.reset();
               loadItems();
             } else {
               const error = await res.json();
-              alert(error.detail || 'Error adding item');
+              showToast(error.detail || 'Error adding item');
             }
           } catch {
-            alert('Something went wrong');
+            showToast('Something went wrong');
           }
         });
 
@@ -435,7 +447,6 @@
         const savedLang = localStorage.getItem("selectedLang") || "en";
         updateCurrentLang(savedLang);
         loadTranslations(savedLang);
-
       } catch (err) {
         console.warn("Redirected due to missing or invalid token.");
       }

@@ -35,7 +35,7 @@ class ItemViewSet(viewsets.ModelViewSet):
         serializer.save(owner=self.request.user)
 
     def perform_update(self, serializer):
-        serializer.save(owner=self.request.user)
+        serializer.save()  # ✅ FIXED: don't override owner
 
 # === Get Logged-In User Info ===
 @api_view(['GET'])

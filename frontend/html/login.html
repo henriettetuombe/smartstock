@@ -18,6 +18,11 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      opacity: 0;
+      transition: opacity 0.4s ease-in;
+    }
+    body.loaded {
+      opacity: 1;
     }
     .login-container {
       display: flex;
@@ -129,6 +134,28 @@
         display: block;
       }
     }
+    #toast {
+      visibility: hidden;
+      min-width: 250px;
+      background-color: #4BB543;
+      color: white;
+      text-align: center;
+      border-radius: 8px;
+      padding: 16px;
+      position: fixed;
+      z-index: 9999;
+      left: 50%;
+      bottom: 30px;
+      transform: translateX(-50%);
+      font-weight: 500;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      transition: visibility 0.3s, opacity 0.3s ease-in-out;
+      opacity: 0;
+    }
+    #toast.show {
+      visibility: visible;
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -169,11 +196,13 @@
       <img src="../images/login-image.jpg" alt="Inventory management image" />
     </div>
   </div>
+  <div id="toast"></div>
 
   <script>
     const API_BASE = 'https://smartstock-1-1wm7.onrender.com';
 
     document.addEventListener("DOMContentLoaded", function () {
+      document.body.classList.add("loaded");
       const lang = new URLSearchParams(window.location.search).get('lang') || localStorage.getItem("selectedLang") || "en";
       localStorage.setItem("selectedLang", lang);
       loadTranslations(lang);
@@ -200,6 +229,15 @@
         });
     }
 
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3000);
+    }
+
     document.getElementById('loginForm').addEventListener('submit', async function (e) {
       e.preventDefault();
       const username = document.getElementById('username').value.trim();
@@ -212,26 +250,21 @@
           body: JSON.stringify({ username, password })
         });
 
-        let data;
-        try {
-          data = await res.json();
-        } catch (jsonErr) {
-          console.error("Invalid JSON response:", await res.text());
-          return alert("Unexpected server response. Check console.");
-        }
+        const data = await res.json();
 
         if (res.ok && data.access && data.refresh) {
           localStorage.setItem('access_token', data.access);
           localStorage.setItem('refresh_token', data.refresh);
-          alert('Login successful!');
-          window.location.href = `dashboard.html?lang=${localStorage.getItem('selectedLang') || 'en'}`;
+          showToast('Login successful!');
+          setTimeout(() => {
+            window.location.href = `dashboard.html?lang=${localStorage.getItem('selectedLang') || 'en'}`;
+          }, 2000);
         } else {
-          console.error("Backend error response:", data);
-          alert(data.error || data.detail || 'Login failed. Please check your credentials.');
+          showToast(data.error || data.detail || 'Login failed. Please check your credentials.');
         }
       } catch (err) {
         console.error('Login request failed:', err);
-        alert('Something went wrong. Try again later.');
+        showToast('Something went wrong. Try again later.');
       }
     });
 
