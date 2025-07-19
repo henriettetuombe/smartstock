@@ -123,6 +123,20 @@
     .login-text a:hover {
       text-decoration: underline;
     }
+    .legal-links {
+      margin-top: 25px;
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+    }
+    .legal-links a {
+      margin: 0 10px;
+      color: #001f54;
+      text-decoration: none;
+    }
+    .legal-links a:hover {
+      text-decoration: underline;
+    }
     #successToast {
       display: none;
       position: fixed;
@@ -206,9 +220,9 @@
           <input type="checkbox" id="terms" required />
           <label for="terms">
             <span data-i18n="agree_to_terms">I agree to all</span>
-            <a href="#"><span data-i18n="terms">terms</span></a>,
-            <a href="#"><span data-i18n="privacy">privacy policies</span></a>,
-            <a href="#"><span data-i18n="fees">fees</span></a>
+            <a href="terms.html"><span data-i18n="terms">terms</span></a>,
+            <a href="privacy.html"><span data-i18n="privacy">privacy policies</span></a>,
+            <a href="fees.html"><span data-i18n="fees">fees</span></a>
           </label>
         </div>
         <button type="submit" class="signup-btn" id="signupBtn">
@@ -220,6 +234,11 @@
           <a id="login-link" href="login.html" data-i18n="login_now">Log in now</a>
         </p>
       </form>
+    </div>
+    <div class="legal-links">
+      <a href="terms.html" data-i18n="terms_link">Terms of Use</a>
+      <a href="privacy.html" data-i18n="privacy_link">Privacy Policy</a>
+      <a href="fees.html" data-i18n="fees_link">Pricing & Fees</a>
     </div>
   </div>
 
@@ -244,17 +263,14 @@
             const key = el.getAttribute("data-i18n");
             if (translations[key]) el.innerHTML = translations[key];
           });
-
           document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
             const key = el.getAttribute("data-i18n-placeholder");
             if (translations[key]) el.placeholder = translations[key];
           });
-
           document.querySelectorAll("option[data-i18n]").forEach(option => {
             const key = option.getAttribute("data-i18n");
             if (translations[key]) option.textContent = translations[key];
           });
-
           if (translations["register_page_title"]) {
             document.title = translations["register_page_title"];
           }

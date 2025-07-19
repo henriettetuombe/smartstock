@@ -92,10 +92,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             last_name=validated_data.get('last_name', '')
         )
 
-        # ✅ Safely create or fetch the profile to prevent crashes
-        profile, _ = UserProfile.objects.get_or_create(user=user)
-        profile.phone_number = phone_number
-        profile.account_type = account_type
-        profile.save()
+        # ✅ Update the auto-created profile (from signals)
+        user.profile.phone_number = phone_number
+        user.profile.account_type = account_type
+        user.profile.save()
 
         return user

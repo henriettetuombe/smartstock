@@ -212,5 +212,33 @@
   "landing_user_wholesalers": "Abacuruzi banini",
   "landing_user_households": "Imiryango & Abantu ku giti cyabo",
   "landing_user_ngos": "Imiryango itari iya Leta & Abanyeshuri",
-  "landing_testimonials": "Yizewe n'abacuruzi bato n’abatangira ubucuruzi"
+  "landing_testimonials": "Yizewe n'abacuruzi bato n’abatangira ubucuruzi", 
+
+  "terms_title": "Amasezerano y'ikoreshwa - SmartStock",
+  "terms_heading": "Amasezerano n'Amabwiriza",
+  "terms_intro": "Murakaza neza kuri SmartStock, urubuga rwacu rwo gucunga ububiko. Mu gukoresha uru rubuga, wemera kuba ugengwa n’amategeko agenga ikoreshwa ryayo. Nyamuneka usome aya masezerano witonze.",
+  "terms_section_privacy": "Ubwirinzi bw’Amakuru",
+  "terms_privacy_text": "Nyamuneka soma Politiki y’Ubwirinzi bw’Amakuru yacu, nayo igenzura uburyo ukoresha SmartStock kugira ngo usobanukirwe n’imikorere yacu.",
+  "terms_section_electronic": "Itumanaho hifashishijwe ikoranabuhanga",
+  "terms_electronic_text": "Iyo ukoresheje SmartStock cyangwa utwoherereje email, uba utuganiriye hifashishijwe ikoranabuhanga. Wemera ko twakohereza ubutumwa hifashishijwe uburyo bw’ikoranabuhanga kandi ibyo butumwa bigahabwa agaciro k’ubuzima gatozi.",
+  "terms_section_ownership": "Uburenganzira & Ibihangano",
+  "terms_ownership_text": "Ibikubiye kuri uru rubuga byose, birimo logos, ibishushanyo, inyandiko n’imbonezamubano ni umutungo wa SmartStock kandi birinzwe n’amategeko y’uburenganzira bw’umwanditsi.",
+  "terms_section_updates": "Impinduka ku masezerano",
+  "terms_updates_text": "SmartStock ifite uburenganzira bwo guhindura aya masezerano igihe icyo ari cyo cyose. Impinduka zizashyirwa kuri uru rubuga.",
+
+  "privacy_title": "Politiki y’Ubwirinzi bw’Amakuru - SmartStock",
+  "privacy_heading": "Politiki y’Ubwirinzi bw’Amakuru",
+  "privacy_intro": "Iyi politiki isobanura uburyo SmartStock ikusanya, ikoresha, kandi ibika amakuru yawe.",
+  "privacy_collection": "Dukusanya amakuru y’umuntu ku giti cye nk’izina, email, n’andi makuru y’uko ukoresha urubuga kugira ngo tunohe serivisi tuguhereza.",
+  "privacy_usage": "Amakuru yawe akoreshwa mu gutanga serivisi, guhuza ibikubiye mu rubuga n’umukoresha, no kunoza imikorere ya porogaramu.",
+  "privacy_security": "Dushyiraho uburyo bwo kurinda amakuru yawe, ariko nta buryo burengera 100%.",
+  "privacy_third_party": "Ntabwo tugurisha amakuru yawe. Ariko hari serivisi z'abandi bashobora kubona amwe mu makuru kugirango serivisi zikomeze gukora neza.",
+  "privacy_changes": "Dushobora kuvugurura iyi politiki igihe icyo ari cyo cyose. Impinduka zizatangazwa hano.",
+
+  "fees_title": "Amafaranga n’Imikoreshereze - SmartStock",
+  "fees_heading": "Amafaranga n’Imikoreshereze",
+  "fees_intro": "SmartStock itanga serivisi zitandukanye harimo iz'ubuntu n'izisaba kwishyura. Iyi gice gisobanura amafaranga asabwa kuri serivisi runaka.",
+  "fees_types": "Bimwe mu bikorwa nk’isesengura ryimbitse cyangwa raporo ziteguye byihariye bishobora gusaba kwishyura.",
+  "fees_method": "Kwishyura bizajya bikorwa hifashishijwe uburyo bwizewe bw’abatanga serivisi z’ishyurwa. Tuzajya tubimenyesha mbere y’uko wishyura.",
+  "fees_changes": "SmartStock ifite uburenganzira bwo guhindura ibiciro. Impinduka zizatangazwa mbere y’uko zishyirwa mu bikorwa."
 }

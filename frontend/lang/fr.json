@@ -212,5 +212,33 @@
   "landing_user_wholesalers": "Grossistes",
   "landing_user_households": "Ménages & Particuliers",
   "landing_user_ngos": "ONG & Étudiants",
-  "landing_testimonials": "Approuvé par les petites entreprises et entrepreneurs"
+  "landing_testimonials": "Approuvé par les petites entreprises et entrepreneurs",
+
+  "terms_title": "Conditions d'utilisation - SmartStock",
+  "terms_heading": "Conditions générales",
+  "terms_intro": "Bienvenue sur SmartStock, notre plateforme de gestion d'inventaire en ligne. En accédant à ce site ou en l'utilisant, vous acceptez d'être lié(e) par les conditions générales ci-dessous. Veuillez les lire attentivement.",
+  "terms_section_privacy": "Confidentialité",
+  "terms_privacy_text": "Veuillez consulter notre politique de confidentialité, qui régit également votre utilisation de SmartStock, afin de comprendre nos pratiques.",
+  "terms_section_electronic": "Communications électroniques",
+  "terms_electronic_text": "Lorsque vous utilisez SmartStock ou nous envoyez des courriels, vous communiquez avec nous électroniquement. Vous consentez à recevoir des communications électroniques de notre part et acceptez que toutes les notifications, divulgations et autres communications que nous vous fournissons électroniquement remplissent toute exigence légale.",
+  "terms_section_ownership": "Propriété & Droits d'auteur",
+  "terms_ownership_text": "Tout le contenu de cette plateforme, y compris les logos, graphiques, textes et logiciels, est la propriété de SmartStock et est protégé par les lois applicables sur les droits d'auteur.",
+  "terms_section_updates": "Mises à jour des conditions",
+  "terms_updates_text": "SmartStock se réserve le droit de modifier ces conditions à tout moment. Toute mise à jour sera publiée sur cette page.",
+
+  "privacy_title": "Politique de confidentialité - SmartStock",
+  "privacy_heading": "Politique de confidentialité",
+  "privacy_intro": "Cette politique de confidentialité décrit comment SmartStock collecte, utilise et protège vos informations.",
+  "privacy_collection": "Nous collectons des données personnelles telles que le nom, l'adresse e-mail et les données d'utilisation pour améliorer votre expérience.",
+  "privacy_usage": "Vos données sont utilisées pour fournir des services, personnaliser le contenu et améliorer les performances de l'application.",
+  "privacy_security": "Nous mettons en place des mesures de sécurité pour protéger vos informations. Cependant, aucune méthode n'est sécurisée à 100 %. ",
+  "privacy_third_party": "Nous ne vendons pas vos données. Certains services tiers peuvent y accéder à des fins fonctionnelles.",
+  "privacy_changes": "Nous pouvons mettre à jour cette politique de confidentialité de temps en temps. Les modifications seront publiées ici.",
+
+  "fees_title": "Frais et paiements - SmartStock",
+  "fees_heading": "Frais et paiements",
+  "fees_intro": "SmartStock propose des fonctionnalités gratuites et premium. Cette section décrit les frais liés à nos services.",
+  "fees_types": "Certaines fonctionnalités peuvent nécessiter un paiement, comme l'analyse avancée ou les rapports personnalisés.",
+  "fees_method": "Les paiements sont traités via des passerelles tierces sécurisées. Vous serez averti(e) avant tout prélèvement.",
+  "fees_changes": "SmartStock se réserve le droit de modifier les prix. Toute modification sera communiquée à l'avance."
 }

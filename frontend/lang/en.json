@@ -212,5 +212,33 @@
   "landing_user_wholesalers": "Wholesalers",
   "landing_user_households": "Households & Individuals",
   "landing_user_ngos": "NGOs & Students",
-  "landing_testimonials": "Trusted by small businesses and entrepreneurs"
+  "landing_testimonials": "Trusted by small businesses and entrepreneurs",
+
+  "terms_title": "Terms of Use - SmartStock",
+  "terms_heading": "Terms and Conditions",
+  "terms_intro": "Welcome to SmartStock, our online inventory platform. By accessing or using this website, you agree to be bound by the terms and conditions outlined below. Please read them carefully.",
+  "terms_section_privacy": "Privacy",
+  "terms_privacy_text": "Please review our Privacy Policy, which also governs your use of SmartStock, to understand our practices.",
+  "terms_section_electronic": "Electronic Communications",
+  "terms_electronic_text": "When you use SmartStock or send emails to us, you are communicating with us electronically. You consent to receive communications from us electronically and agree that all notices, disclosures, and other communications we provide you electronically satisfy any legal requirement.",
+  "terms_section_ownership": "Ownership & Copyright",
+  "terms_ownership_text": "All content on this platform, including logos, graphics, text, and software, is the property of SmartStock and protected by applicable copyright laws.",
+  "terms_section_updates": "Updates to Terms",
+  "terms_updates_text": "SmartStock reserves the right to make changes to these terms at any time. Any updates will be posted on this page.",
+
+  "privacy_title": "Privacy Policy - SmartStock",
+  "privacy_heading": "Privacy Policy",
+  "privacy_intro": "This Privacy Policy outlines how SmartStock collects, uses, and protects your information.",
+  "privacy_collection": "We collect personal data such as name, email, and usage data to improve your experience.",
+  "privacy_usage": "Your data is used to provide services, personalize content, and enhance app performance.",
+  "privacy_security": "We implement security measures to protect your information. However, no method is 100% secure.",
+  "privacy_third_party": "We do not sell your data. Some third-party services may have access for functionality purposes.",
+  "privacy_changes": "We may update this Privacy Policy from time to time. Changes will be posted here.",
+
+  "fees_title": "Fees and Payments - SmartStock",
+  "fees_heading": "Fees and Payments",
+  "fees_intro": "SmartStock offers both free and premium features. This section outlines any fees associated with our services.",
+  "fees_types": "Some features may require payment, such as advanced analytics or custom reporting.",
+  "fees_method": "Payments are handled via secure third-party gateways. You’ll be notified before any charges.",
+  "fees_changes": "SmartStock reserves the right to change pricing. Any changes will be communicated in advance."
 }

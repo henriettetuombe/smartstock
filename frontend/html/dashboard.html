@@ -184,6 +184,45 @@
     }
     #langDropdown li:hover { background: #f0f0f0; }
     .hidden { display: none; }
+
+    .stock-alert-dropdown {
+      position: absolute;
+      top: 70px;
+      right: 60px;
+      background: #fff;
+      border: 1px solid #ddd;
+      width: 300px;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+      z-index: 999;
+    }
+    .stock-alert-dropdown h4 {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    #alert-list li {
+      padding: 5px 0;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+    }
+    .badge.low { background-color: orange; }
+    .badge.out { background-color: red; }
+
+    #notification-count {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      background: red;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 10px;
+      font-weight: bold;
+      display: none;
+    }
+
     @media (max-width: 768px) {
       .dashboard { flex-direction: column; }
       .sidebar { width: 100%; }
@@ -217,10 +256,7 @@
       </div>
       <div class="top-bar-right">
         <div class="language-container">
-          <button id="langButton">
-            <i data-feather="globe"></i>
-            <span id="currentLang">English</span>
-          </button>
+          <button id="langButton"><i data-feather="globe"></i><span id="currentLang">English</span></button>
           <ul id="langDropdown" class="dropdown hidden">
             <li data-lang="en">🇬🇧 English</li>
             <li data-lang="rw">🇷🇼 Kinyarwanda</li>
@@ -228,11 +264,19 @@
           </ul>
         </div>
         <div class="company-dropdown" id="userDisplay">User ▾</div>
-        <button class="icon-btn" id="notificationBtn"><i data-feather="bell"></i></button>
+        <div id="notification-icon" style="position: relative;">
+          <button class="icon-btn" id="notificationBtn"><i data-feather="bell"></i></button>
+          <span id="notification-count">0</span>
+        </div>
         <button class="icon-btn" onclick="window.location.href='settings.html'"><i data-feather="settings"></i></button>
         <div class="avatar" id="profileInitial">U</div>
       </div>
     </header>
+
+    <div id="stock-alerts" class="stock-alert-dropdown hidden">
+      <h4>Stock Alerts</h4>
+      <ul id="alert-list"></ul>
+    </div>
 
     <section class="content">
       <div class="card">
@@ -281,7 +325,6 @@
         </table>
       </div>
     </section>
-
     <footer data-i18n="footer_text">© 2025 SmartStock. Built by Henriette for businesses and households.</footer>
   </main>
 </div>
@@ -289,10 +332,16 @@
 <script>
   feather.replace();
   const API_BASE = "https://smartstock-1-1wm7.onrender.com";
+  let items = [];
 
   function logout() {
     localStorage.removeItem("access_token");
     window.location.href = "login.html";
+  }
+
+  function updateCurrentLang(lang) {
+    const labelMap = { en: "English", rw: "Kinyarwanda", fr: "Français" };
+    document.getElementById("currentLang").textContent = labelMap[lang] || "English";
   }
 
   async function loadTranslations(lang) {
@@ -308,26 +357,21 @@
     });
   }
 
-  function updateCurrentLang(lang) {
-    const labelMap = { en: "English", rw: "Kinyarwanda", fr: "Français" };
-    document.getElementById("currentLang").textContent = labelMap[lang] || "English";
-  }
-
   document.addEventListener("DOMContentLoaded", async () => {
     const lang = localStorage.getItem("selectedLang") || "en";
     updateCurrentLang(lang);
     await loadTranslations(lang);
 
-    const langBtn = document.getElementById("langButton");
-    const langDropdown = document.getElementById("langDropdown");
-    langBtn.onclick = () => langDropdown.classList.toggle("hidden");
+    document.getElementById("langButton").onclick = () =>
+      document.getElementById("langDropdown").classList.toggle("hidden");
+
     document.querySelectorAll("#langDropdown li").forEach(li => {
       li.onclick = async () => {
         const selected = li.getAttribute("data-lang");
         localStorage.setItem("selectedLang", selected);
         updateCurrentLang(selected);
         await loadTranslations(selected);
-        langDropdown.classList.add("hidden");
+        document.getElementById("langDropdown").classList.add("hidden");
       };
     });
 
@@ -347,7 +391,8 @@
     const res = await fetch(`${API_BASE}/api/items/`, {
       headers: { Authorization: `Bearer ${token}` }
     });
-    const items = await res.json();
+    items = await res.json();
+
     const now = new Date();
     let added = 0, updated = 0, deleted = 0;
     const tbody = document.getElementById("inventoryTableBody");
@@ -376,10 +421,34 @@
     document.getElementById("totalItems").textContent = items.length;
 
     document.getElementById("notificationBtn").addEventListener("click", () => {
-      const alerts = items.filter(i => i.status.toLowerCase().includes("low") || i.status.toLowerCase().includes("out"));
-      alert(alerts.length === 0
-        ? "All items are sufficiently stocked."
-        : "Stock Alerts:\n\n" + alerts.map(i => `${i.name} — ${i.status.toUpperCase()}`).join("\n"));
+      const container = document.getElementById("stock-alerts");
+      const list = document.getElementById("alert-list");
+      const alerts = items.filter(i =>
+        i.status.toLowerCase().includes("low") ||
+        i.status.toLowerCase().includes("out")
+      );
+
+      list.innerHTML = "";
+      alerts.forEach(i => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          ${i.name}
+          <span class="badge ${i.status.toLowerCase().includes('out') ? 'out' : 'low'}">
+            ${i.status.replace("_", " ").toLowerCase()}
+          </span>`;
+        list.appendChild(li);
+      });
+
+      const alertCount = alerts.length;
+      const countSpan = document.getElementById("notification-count");
+      if (alertCount > 0) {
+        countSpan.textContent = alertCount;
+        countSpan.style.display = "inline-block";
+      } else {
+        countSpan.style.display = "none";
+      }
+
+      container.classList.toggle("hidden");
     });
 
     document.getElementById("searchInput").addEventListener("input", e => {
@@ -390,6 +459,77 @@
       });
     });
   });
+  // 👇 Add this just after your DOMContentLoaded ends — outside it
+window.addEventListener("load", () => {
+  const token = localStorage.getItem("access_token");
+  const apiUrl = `${API_BASE}/api/items/`;
+
+  async function fetchAndStoreStockAlerts() {
+    try {
+      const res = await fetch(apiUrl, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const items = await res.json();
+      const alerts = items.filter(i =>
+        i.status === "running_low" || i.status === "out_of_stock"
+      );
+      localStorage.setItem("stock_alerts", JSON.stringify(alerts));
+    } catch (err) {
+      console.error("Fetch failed, will rely on offline alerts", err);
+    }
+  }
+
+  function loadOfflineStockAlerts() {
+    const stored = localStorage.getItem("stock_alerts");
+    const alerts = stored ? JSON.parse(stored) : [];
+    const list = document.getElementById("alert-list");
+    const count = document.getElementById("notification-count");
+    list.innerHTML = "";
+    alerts.forEach(i => {
+      const li = document.createElement("li");
+      li.innerHTML = `
+        ${i.name}
+        <span class="badge ${i.status.toLowerCase().includes('out') ? 'out' : 'low'}">
+          ${i.status.replace("_", " ").toLowerCase()}
+        </span>`;
+      list.appendChild(li);
+    });
+    if (alerts.length > 0) {
+      count.textContent = alerts.length;
+      count.style.display = "inline-block";
+    } else {
+      count.style.display = "none";
+    }
+  }
+
+  if (navigator.onLine) {
+    fetchAndStoreStockAlerts();
+  } else {
+    loadOfflineStockAlerts();
+  }
+
+  window.addEventListener("online", fetchAndStoreStockAlerts);
+  window.addEventListener("offline", loadOfflineStockAlerts);
+});
+
+</script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/frontend/service-worker.js')
+        .then(reg => console.log(' Service Worker registered', reg))
+        .catch(err => console.error(' Service Worker registration failed', err));
+    });
+  }
+  document.getElementById("searchInput").addEventListener("input", e => {
+  const value = e.target.value.toLowerCase();
+  document.querySelectorAll("#inventoryTableBody tr").forEach(row => {
+    const rowText = Array.from(row.querySelectorAll("td"))
+      .map(td => td.textContent.toLowerCase())
+      .join(" ");
+    row.style.display = rowText.includes(value) ? "" : "none";
+  });
+});
 </script>
 </body>
 </html>
