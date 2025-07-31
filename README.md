@@ -5,7 +5,7 @@ SmartStock is a modern, multilingual, mobile-responsive inventory management sys
 
 ## Live Deployment
 
-- Frontend: https://merry-dango-a5ec2a.netlify.app/html/landing.html
+- Frontend: https://astonishing-babka-1f9fec.netlify.app/html/landing.html
 - Backend: https://smartstock-1-1wm7.onrender.com
 
 Make sure the backend is running for frontend interactions (like item creation, language loading, or authentication).
@@ -172,7 +172,7 @@ Covers:
 
 - Platform: Netlify
 - Build: Static HTML/CSS/JS
-- URL: https://merry-dango-a5ec2a.netlify.app/html/landing.html
+- URL: https://astonishing-babka-1f9fec.netlify.app/html/landing.html
 
 ## Tech Stack
 

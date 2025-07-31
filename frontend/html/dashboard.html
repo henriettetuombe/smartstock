@@ -6,6 +6,8 @@
   <title data-i18n="dashboard">Dashboard – SmartStock</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/feather-icons"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -285,6 +287,11 @@
         <p id="lastUpdated">Loading...</p>
         <p><strong data-i18n="insights">Inventory Insights</strong><span class="badge">Admin</span></p>
       </div>
+      <div class="card">
+  <h4 data-i18n="stock_chart">Stock Status Chart</h4>
+  <canvas id="stockChart"></canvas>
+</div>
+
 
       <div class="card">
         <h4 data-i18n="inventory_activity">Inventory Activity</h4>
@@ -328,7 +335,6 @@
     <footer data-i18n="footer_text">© 2025 SmartStock. Built by Henriette for businesses and households.</footer>
   </main>
 </div>
-
 <script>
   feather.replace();
   const API_BASE = "https://smartstock-1-1wm7.onrender.com";
@@ -395,6 +401,8 @@
 
     const now = new Date();
     let added = 0, updated = 0, deleted = 0;
+    let inStock = 0, runningLow = 0, outOfStock = 0;
+
     const tbody = document.getElementById("inventoryTableBody");
     tbody.innerHTML = '';
     items.forEach(item => {
@@ -411,6 +419,12 @@
       if ((now - addedDate) / 86400000 <= 7) added++;
       if ((now - updatedDate) / 86400000 <= 7) updated++;
       if (item.status.toLowerCase() === "deleted") deleted++;
+
+      // Count for chart
+      const status = item.status.toLowerCase();
+      if (status.includes("running_low")) runningLow++;
+      else if (status.includes("out_of_stock")) outOfStock++;
+      else inStock++;
     });
 
     document.getElementById("totalStock").textContent = `${items.length} item(s) tracked`;
@@ -454,66 +468,88 @@
     document.getElementById("searchInput").addEventListener("input", e => {
       const value = e.target.value.toLowerCase();
       document.querySelectorAll("#inventoryTableBody tr").forEach(row => {
-        const itemName = row.querySelector("td")?.textContent.toLowerCase() || "";
-        row.style.display = itemName.includes(value) ? "" : "none";
+        const rowText = Array.from(row.querySelectorAll("td"))
+          .map(td => td.textContent.toLowerCase())
+          .join(" ");
+        row.style.display = rowText.includes(value) ? "" : "none";
       });
     });
+
+    // Chart.js block moved here so it uses inStock, runningLow, outOfStock
+    const ctx = document.getElementById('stockChart')?.getContext('2d');
+    if (ctx) {
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['In Stock', 'Running Low', 'Out of Stock'],
+          datasets: [{
+            label: 'Items',
+            data: [inStock, runningLow, outOfStock],
+            backgroundColor: ['#4CAF50', '#FFC107', '#F44336']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true } }
+        }
+      });
+    }
   });
-  // 👇 Add this just after your DOMContentLoaded ends — outside it
-window.addEventListener("load", () => {
-  const token = localStorage.getItem("access_token");
-  const apiUrl = `${API_BASE}/api/items/`;
 
-  async function fetchAndStoreStockAlerts() {
-    try {
-      const res = await fetch(apiUrl, {
-        headers: { Authorization: `Bearer ${token}` }
+  // Corrected: closed load event block
+  window.addEventListener("load", () => {
+    const token = localStorage.getItem("access_token");
+    const apiUrl = `${API_BASE}/api/items/`;
+
+    async function fetchAndStoreStockAlerts() {
+      try {
+        const res = await fetch(apiUrl, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const items = await res.json();
+        const alerts = items.filter(i =>
+          i.status === "running_low" || i.status === "out_of_stock"
+        );
+        localStorage.setItem("stock_alerts", JSON.stringify(alerts));
+      } catch (err) {
+        console.error("Fetch failed, will rely on offline alerts", err);
+      }
+    }
+
+    function loadOfflineStockAlerts() {
+      const stored = localStorage.getItem("stock_alerts");
+      const alerts = stored ? JSON.parse(stored) : [];
+      const list = document.getElementById("alert-list");
+      const count = document.getElementById("notification-count");
+      list.innerHTML = "";
+      alerts.forEach(i => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          ${i.name}
+          <span class="badge ${i.status.toLowerCase().includes('out') ? 'out' : 'low'}">
+            ${i.status.replace("_", " ").toLowerCase()}
+          </span>`;
+        list.appendChild(li);
       });
-      const items = await res.json();
-      const alerts = items.filter(i =>
-        i.status === "running_low" || i.status === "out_of_stock"
-      );
-      localStorage.setItem("stock_alerts", JSON.stringify(alerts));
-    } catch (err) {
-      console.error("Fetch failed, will rely on offline alerts", err);
+      if (alerts.length > 0) {
+        count.textContent = alerts.length;
+        count.style.display = "inline-block";
+      } else {
+        count.style.display = "none";
+      }
     }
-  }
 
-  function loadOfflineStockAlerts() {
-    const stored = localStorage.getItem("stock_alerts");
-    const alerts = stored ? JSON.parse(stored) : [];
-    const list = document.getElementById("alert-list");
-    const count = document.getElementById("notification-count");
-    list.innerHTML = "";
-    alerts.forEach(i => {
-      const li = document.createElement("li");
-      li.innerHTML = `
-        ${i.name}
-        <span class="badge ${i.status.toLowerCase().includes('out') ? 'out' : 'low'}">
-          ${i.status.replace("_", " ").toLowerCase()}
-        </span>`;
-      list.appendChild(li);
-    });
-    if (alerts.length > 0) {
-      count.textContent = alerts.length;
-      count.style.display = "inline-block";
+    if (navigator.onLine) {
+      fetchAndStoreStockAlerts();
     } else {
-      count.style.display = "none";
+      loadOfflineStockAlerts();
     }
-  }
 
-  if (navigator.onLine) {
-    fetchAndStoreStockAlerts();
-  } else {
-    loadOfflineStockAlerts();
-  }
+    window.addEventListener("online", fetchAndStoreStockAlerts);
+    window.addEventListener("offline", loadOfflineStockAlerts);
+  });
 
-  window.addEventListener("online", fetchAndStoreStockAlerts);
-  window.addEventListener("offline", loadOfflineStockAlerts);
-});
-
-</script>
-<script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/frontend/service-worker.js')
@@ -521,15 +557,6 @@ window.addEventListener("load", () => {
         .catch(err => console.error(' Service Worker registration failed', err));
     });
   }
-  document.getElementById("searchInput").addEventListener("input", e => {
-  const value = e.target.value.toLowerCase();
-  document.querySelectorAll("#inventoryTableBody tr").forEach(row => {
-    const rowText = Array.from(row.querySelectorAll("td"))
-      .map(td => td.textContent.toLowerCase())
-      .join(" ");
-    row.style.display = rowText.includes(value) ? "" : "none";
-  });
-});
 </script>
 </body>
 </html>
